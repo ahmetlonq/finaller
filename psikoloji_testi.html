@@ -3,194 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Eğitim Psikolojisi - Mobil Sınav</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>AGS Deneme - Eğitim Psikolojisi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         
         body { 
             margin: 0; 
-            padding: 0; 
-            background-color: #f3f4f6; 
+            padding: 20px 10px; 
+            background-color: #e5e7eb; /* Kartın öne çıkması için koyu gri arka plan */
             color: #1f2937; 
             display: flex; 
-            flex-direction: column; 
-            height: 100vh; /* Tam ekran yüksekliği */
-            overflow: hidden; /* Sayfa kaymasını engeller, app hissi verir */
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Üst Bilgi Çubuğu */
-        .header { 
-            background: #ffffff; 
-            padding: 20px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
-            z-index: 10;
-        }
-        .progress-info { 
-            display: flex; 
-            justify-content: space-between; 
-            font-size: 14px; 
-            font-weight: 700; 
-            color: #4b5563; 
-            margin-bottom: 10px; 
-        }
-        .progress-bar-bg { 
-            width: 100%; 
-            height: 8px; 
-            background: #e5e7eb; 
-            border-radius: 4px; 
-            overflow: hidden; 
-        }
-        .progress-bar-fill { 
-            height: 100%; 
-            background: #3b82f6; 
-            width: 0%; 
-            transition: width 0.3s ease; 
-        }
-
-        /* Ana Soru Alanı */
-        .main-content { 
-            flex: 1; 
-            padding: 20px; 
-            overflow-y: auto; /* Sadece şıklar çok uzarsa burası kayar */
+        /* Ana Kart (Blok) Tasarımı */
+        .quiz-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 650px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
-        .question-text { 
-            font-size: 18px; 
-            font-weight: 600; 
-            line-height: 1.5; 
-            margin-bottom: 25px; 
-            color: #111827; 
+        /* --- ÜST ÇERÇEVE (İstatistikler) --- */
+        .quiz-header {
+            background: #f8fafc;
+            padding: 20px;
+            border-bottom: 2px solid #e2e8f0;
         }
-
-        /* Şıklar */
-        .options-container { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
-        .option-btn { 
-            background: #ffffff; 
-            border: 2px solid #e5e7eb; 
-            padding: 16px; 
-            border-radius: 12px; 
-            font-size: 16px; 
-            font-weight: 500; 
-            text-align: left; 
-            color: #374151; 
-            cursor: pointer; 
-            transition: all 0.2s; 
+        .q-counter {
+            font-size: 16px;
+            font-weight: 700;
+            color: #3b82f6;
+            background: #eff6ff;
+            padding: 6px 12px;
+            border-radius: 8px;
         }
+        .score-badges {
+            display: flex;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .badge-correct { color: #16a34a; background: #dcfce7; padding: 6px 10px; border-radius: 6px; }
+        .badge-wrong { color: #dc2626; background: #fee2e2; padding: 6px 10px; border-radius: 6px; }
         
-        /* Etkileşim Renkleri */
-        .option-btn.correct { 
-            background: #dcfce7 !important; 
-            border-color: #22c55e !important; 
-            color: #166534 !important; 
-        }
-        .option-btn.wrong { 
-            background: #fee2e2 !important; 
-            border-color: #ef4444 !important; 
-            color: #991b1b !important; 
-        }
-        .option-btn:disabled { cursor: not-allowed; }
+        .progress-bg { width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; }
+        .progress-fill { height: 100%; background: #3b82f6; border-radius: 3px; width: 0%; transition: 0.3s; }
 
-        /* Alt Kontrol Barı (İleri Butonu) */
-        .footer { 
-            padding: 20px; 
-            background: #ffffff; 
-            border-top: 1px solid #e5e7eb; 
+        /* --- ORTA BLOK (Soru ve Şıklar) --- */
+        .quiz-body {
+            padding: 30px 20px;
+            flex-grow: 1;
         }
-        .next-btn { 
-            width: 100%; 
-            background: #3b82f6; 
-            color: white; 
-            border: none; 
-            padding: 16px; 
-            border-radius: 12px; 
-            font-size: 18px; 
-            font-weight: 700; 
-            cursor: pointer; 
-            display: none; /* Cevap verilene kadar gizli */
-            transition: background 0.2s;
+        .question-text {
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #111827;
         }
-        .next-btn:hover { background: #2563eb; }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .option-btn {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            text-align: left;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option-btn:hover:not(:disabled) { border-color: #cbd5e1; background: #f8fafc; }
+        
+        /* Şık Durum Renkleri */
+        .option-btn.selected { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; font-weight: 600; }
+        .option-btn.correct { background: #dcfce7 !important; border-color: #22c55e !important; color: #166534 !important; }
+        .option-btn.wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; }
+        .option-btn:disabled { cursor: default; }
+
+        /* --- ALT ÇERÇEVE (Butonlar) --- */
+        .quiz-footer {
+            background: #f8fafc;
+            padding: 20px;
+            border-top: 2px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .nav-btn {
+            flex: 1;
+            padding: 14px 10px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+        .btn-prev { background: #e2e8f0; color: #475569; }
+        .btn-prev:hover:not(:disabled) { background: #cbd5e1; }
+        
+        .btn-check { background: #f59e0b; color: white; flex: 1.5; }
+        .btn-check:hover:not(:disabled) { background: #d97706; }
+        
+        .btn-next { background: #3b82f6; color: white; }
+        .btn-next:hover:not(:disabled) { background: #2563eb; }
+        
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         /* Sonuç Ekranı */
-        #result-screen { 
-            display: none; 
-            text-align: center; 
-            padding: 40px 20px; 
-            flex: 1; 
-            justify-content: center; 
-            flex-direction: column; 
-        }
-        .score-circle { 
-            width: 120px; 
-            height: 120px; 
-            background: #eff6ff; 
-            border: 4px solid #3b82f6; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 32px; 
-            font-weight: 700; 
-            color: #1d4ed8; 
-            margin: 0 auto 20px auto; 
-        }
-        .restart-btn { 
-            background: #111827; 
-            color: white; 
-            border: none; 
-            padding: 16px 32px; 
-            border-radius: 12px; 
-            font-size: 16px; 
-            font-weight: 700; 
-            margin-top: 30px; 
-            cursor: pointer; 
-        }
+        #result-screen { display: none; text-align: center; padding: 50px 20px; }
+        .result-circle { width: 100px; height: 100px; background: #eff6ff; border: 4px solid #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; color: #1d4ed8; margin: 0 auto 20px auto; }
     </style>
 </head>
 <body>
 
-    <div class="header" id="header-area">
-        <div class="progress-info">
-            <span>Eğitim Psikolojisi</span>
-            <span id="question-counter">Soru 1 / 5</span>
-        </div>
-        <div class="progress-bar-bg">
-            <div class="progress-bar-fill" id="progress-bar"></div>
-        </div>
-    </div>
-
-    <div class="main-content" id="quiz-area">
-        <div class="question-text" id="question-text">Soru metni yükleniyor...</div>
-        <div class="options-container" id="options-container">
+    <div class="quiz-card" id="quiz-card">
+        
+        <div class="quiz-header" id="header-area">
+            <div class="stats-row">
+                <div class="q-counter" id="question-counter">Aşama: 1 / 5</div>
+                <div class="score-badges">
+                    <div class="badge-correct" id="correct-text">Doğru: 0</div>
+                    <div class="badge-wrong" id="wrong-text">Yanlış: 0</div>
+                </div>
             </div>
-    </div>
+            <div class="progress-bg"><div class="progress-fill" id="progress-bar"></div></div>
+        </div>
 
-    <div class="footer" id="footer-area">
-        <button class="next-btn" id="next-btn" onclick="nextQuestion()">Sıradaki Soru ➔</button>
-    </div>
+        <div class="quiz-body" id="quiz-area">
+            <div class="question-text" id="question-text">Soru yükleniyor...</div>
+            <div class="options-container" id="options-container">
+                </div>
+        </div>
 
-    <div id="result-screen">
-        <h2 style="margin-top:0; color:#111827;">Sınav Tamamlandı!</h2>
-        <div class="score-circle" id="score-text">0/5</div>
-        <p style="color:#4b5563; font-size:16px;">Tebrikler, Eğitim Psikolojisi çalışma testini bitirdiniz.</p>
-        <button class="restart-btn" onclick="location.reload()">↻ Testi Yeniden Başlat</button>
+        <div class="quiz-footer" id="footer-area">
+            <button class="nav-btn btn-prev" id="btn-prev" onclick="prevQuestion()">◂ Geri</button>
+            <button class="nav-btn btn-check" id="btn-check" onclick="checkAnswer()">👁️ Cevabı Göster</button>
+            <button class="nav-btn btn-next" id="btn-next" onclick="nextQuestion()">İleri ➔</button>
+        </div>
+
+        <div id="result-screen">
+            <h2 style="margin-top:0; color:#111827;">Test Tamamlandı!</h2>
+            <div class="result-circle" id="score-result">0/5</div>
+            <p style="color:#4b5563; font-size:16px;">Performans analiziniz kaydedildi.</p>
+            <button class="nav-btn btn-next" style="width: 100%; margin-top: 20px;" onclick="location.reload()">↻ Yeniden Çöz</button>
+        </div>
+
     </div>
 
     <script>
-        // PDF'ten çıkarılan örnek veri seti. Geri kalanları buraya aynı formatta ekleyebilirsin.
-        // Doğru cevabın index numarasını (0, 1, 2, 3, 4) 'correct' kısmına yazmalısın.
+        // Soru Veritabanı
         const quizData = [
             {
                 question: "\"Çocuklar bu dönemde bütün parça ilişkisini kuramazlar. Örn, Bilyelerden maviler mi çok yoksa kırmızılar mı? sorusuna 'maviler' diyerek doğru cevabı verebilirler ancak bilyelerin tamamı mı daha çok yoksa maviler mi? sorusuna da 'maviler' cevabını verirler.\" Bu anlatımda hangi dönem çocuğundan bahsedilmektedir?",
                 options: ["A) Somut işlemler dönemi", "B) Eylemsel dönem", "C) İşlem öncesi dönem", "D) Somut öncesi dönem", "E) İşlemsel dönem"],
-                correct: 2 // C şıkkı doğru
+                correct: 2 
             },
             {
                 question: "Freud'un Psiko seksüel Gelişim Kuramına göre çocuk hangi dönemde cinsiyet farklılıklarını keşfeder?",
@@ -214,53 +201,131 @@
             }
         ];
 
-        let currentQuestionIndex = 0;
-        let score = 0;
+        // Sorulara kullanıcı cevabını tutacak alan ekliyoruz (Geri dönüldüğünde hatırlaması için)
+        quizData.forEach(q => {
+            q.selectedTemp = null; // Tıklanan ama henüz onaylanmayan şık
+            q.userAnswer = null;   // Onaylanmış kalıcı cevap
+        });
 
-        const questionTextElement = document.getElementById("question-text");
-        const optionsContainer = document.getElementById("options-container");
-        const nextButton = document.getElementById("next-btn");
-        const progressFill = document.getElementById("progress-bar");
-        const counterText = document.getElementById("question-counter");
+        let currentIndex = 0;
+        let correctCount = 0;
+        let wrongCount = 0;
 
-        // Sayfa açıldığında ilk soruyu yükle
+        const qText = document.getElementById("question-text");
+        const optContainer = document.getElementById("options-container");
+        const btnPrev = document.getElementById("btn-prev");
+        const btnCheck = document.getElementById("btn-check");
+        const btnNext = document.getElementById("btn-next");
+
         function loadQuestion() {
-            // İleri butonunu gizle
-            nextButton.style.display = "none";
-            optionsContainer.innerHTML = "";
-
-            const currentData = quizData[currentQuestionIndex];
+            const q = quizData[currentIndex];
             
-            // Soru Metnini Yazdır
-            questionTextElement.innerText = currentData.question;
+            // Üst Bar Güncelleme
+            document.getElementById("question-counter").innerText = `Aşama: ${currentIndex + 1} / ${quizData.length}`;
+            document.getElementById("progress-bar").style.width = `${((currentIndex + 1) / quizData.length) * 100}%`;
+            document.getElementById("correct-text").innerText = `Doğru: ${correctCount}`;
+            document.getElementById("wrong-text").innerText = `Yanlış: ${wrongCount}`;
 
-            // İlerleme çubuğu ve sayacı güncelle
-            let currentQNum = currentQuestionIndex + 1;
-            counterText.innerText = `Soru ${currentQNum} / ${quizData.length}`;
-            progressFill.style.width = `${(currentQNum / quizData.length) * 100}%`;
+            // Soru Metni
+            qText.innerText = q.question;
+            optContainer.innerHTML = "";
 
-            // Şıkları oluştur
-            currentData.options.forEach((optionText, index) => {
-                const button = document.createElement("button");
-                button.className = "option-btn";
-                button.innerText = optionText;
-                button.onclick = () => selectOption(button, index);
-                optionsContainer.appendChild(button);
+            // Şıkları Oluşturma
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn";
+                btn.innerText = opt;
+                
+                // Eğer soru daha önce cevaplandıysa (Geri tuşu ile gelindiyse)
+                if (q.userAnswer !== null) {
+                    btn.disabled = true;
+                    if (index === q.correct) btn.classList.add("correct");
+                    else if (index === q.userAnswer) btn.classList.add("wrong");
+                } 
+                // Henüz cevaplanmadıysa ama seçildiyse (mavi çerçeve)
+                else {
+                    if (index === q.selectedTemp) btn.classList.add("selected");
+                    btn.onclick = () => selectOption(index);
+                }
+                optContainer.appendChild(btn);
             });
+
+            // Alt Buton Kontrolleri
+            btnPrev.disabled = currentIndex === 0; // İlk sorudaysa Geri tuşunu kapat
+            
+            if (q.userAnswer !== null) {
+                btnCheck.disabled = true;
+                btnCheck.innerText = "Cevaplandı ✓";
+            } else {
+                btnCheck.disabled = false;
+                btnCheck.innerText = "👁️ Cevabı Göster";
+            }
         }
 
-        // Şıkkı seçince çalışan fonksiyon
-        function selectOption(selectedButton, selectedIndex) {
-            const currentData = quizData[currentQuestionIndex];
-            const allButtons = optionsContainer.querySelectorAll(".option-btn");
+        // Şıkka Tıklama (Sadece seçer, anında doğru/yanlış demez)
+        function selectOption(index) {
+            const q = quizData[currentIndex];
+            if (q.userAnswer !== null) return; 
+            
+            q.selectedTemp = index;
+            loadQuestion(); // Ekranı yenile (Mavi çerçeveyi göstermek için)
+        }
 
-            // Bütün butonları tıklanamaz yap
-            allButtons.forEach(btn => {
-                btn.disabled = true;
-                btn.style.cursor = "default";
-            });
+        // "Cevabı Göster" Butonu İşlevi
+        function checkAnswer() {
+            const q = quizData[currentIndex];
+            if (q.userAnswer !== null) return; // Zaten kontrol edildiyse çık
+            
+            if (q.selectedTemp === null) {
+                alert("Lütfen önce bir şık işaretleyin!");
+                return;
+            }
 
-            // Doğru mu Yanlış mı kontrol et
+            q.userAnswer = q.selectedTemp; // Geçici seçimi kalıcı yap
+
+            if (q.userAnswer === q.correct) correctCount++;
+            else wrongCount++;
+
+            loadQuestion(); // Renkleri ve sayaçları güncellemek için ekranı yenile
+        }
+
+        function nextQuestion() {
+            // Eğer öğrenci şık seçmiş ama "Cevabı Göster" dememişse uyar
+            if (quizData[currentIndex].selectedTemp !== null && quizData[currentIndex].userAnswer === null) {
+                alert("Lütfen ilerlemeden önce 'Cevabı Göster' butonuna basarak cevabınızı onaylayın.");
+                return;
+            }
+
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        }
+
+        function finishQuiz() {
+            document.getElementById("header-area").style.display = "none";
+            document.getElementById("quiz-area").style.display = "none";
+            document.getElementById("footer-area").style.display = "none";
+            
+            document.getElementById("result-screen").style.display = "block";
+            document.getElementById("score-result").innerText = `${correctCount}/${quizData.length}`;
+        }
+
+        // Başlat
+        loadQuestion();
+    </script>
+</body>
+</html>
+   // Doğru mu Yanlış mı kontrol et
             if (selectedIndex === currentData.correct) {
                 selectedButton.classList.add("correct");
                 score++;
