@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Eğitim Psikolojisi - Mobil Sınav</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f3f4f6; 
+            color: #1f2937; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; /* Tam ekran yüksekliği */
+            overflow: hidden; /* Sayfa kaymasını engeller, app hissi verir */
+        }
+
+        /* Üst Bilgi Çubuğu */
+        .header { 
+            background: #ffffff; 
+            padding: 20px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+            z-index: 10;
+        }
+        .progress-info { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 14px; 
+            font-weight: 700; 
+            color: #4b5563; 
+            margin-bottom: 10px; 
+        }
+        .progress-bar-bg { 
+            width: 100%; 
+            height: 8px; 
+            background: #e5e7eb; 
+            border-radius: 4px; 
+            overflow: hidden; 
+        }
+        .progress-bar-fill { 
+            height: 100%; 
+            background: #3b82f6; 
+            width: 0%; 
+            transition: width 0.3s ease; 
+        }
+
+        /* Ana Soru Alanı */
+        .main-content { 
+            flex: 1; 
+            padding: 20px; 
+            overflow-y: auto; /* Sadece şıklar çok uzarsa burası kayar */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-text { 
+            font-size: 18px; 
+            font-weight: 600; 
+            line-height: 1.5; 
+            margin-bottom: 25px; 
+            color: #111827; 
+        }
+
+        /* Şıklar */
+        .options-container { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+        }
+        .option-btn { 
+            background: #ffffff; 
+            border: 2px solid #e5e7eb; 
+            padding: 16px; 
+            border-radius: 12px; 
+            font-size: 16px; 
+            font-weight: 500; 
+            text-align: left; 
+            color: #374151; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+        }
+        
+        /* Etkileşim Renkleri */
+        .option-btn.correct { 
+            background: #dcfce7 !important; 
+            border-color: #22c55e !important; 
+            color: #166534 !important; 
+        }
+        .option-btn.wrong { 
+            background: #fee2e2 !important; 
+            border-color: #ef4444 !important; 
+            color: #991b1b !important; 
+        }
+        .option-btn:disabled { cursor: not-allowed; }
+
+        /* Alt Kontrol Barı (İleri Butonu) */
+        .footer { 
+            padding: 20px; 
+            background: #ffffff; 
+            border-top: 1px solid #e5e7eb; 
+        }
+        .next-btn { 
+            width: 100%; 
+            background: #3b82f6; 
+            color: white; 
+            border: none; 
+            padding: 16px; 
+            border-radius: 12px; 
+            font-size: 18px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            display: none; /* Cevap verilene kadar gizli */
+            transition: background 0.2s;
+        }
+        .next-btn:hover { background: #2563eb; }
+
+        /* Sonuç Ekranı */
+        #result-screen { 
+            display: none; 
+            text-align: center; 
+            padding: 40px 20px; 
+            flex: 1; 
+            justify-content: center; 
+            flex-direction: column; 
+        }
+        .score-circle { 
+            width: 120px; 
+            height: 120px; 
+            background: #eff6ff; 
+            border: 4px solid #3b82f6; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 32px; 
+            font-weight: 700; 
+            color: #1d4ed8; 
+            margin: 0 auto 20px auto; 
+        }
+        .restart-btn { 
+            background: #111827; 
+            color: white; 
+            border: none; 
+            padding: 16px 32px; 
+            border-radius: 12px; 
+            font-size: 16px; 
+            font-weight: 700; 
+            margin-top: 30px; 
+            cursor: pointer; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header" id="header-area">
+        <div class="progress-info">
+            <span>Eğitim Psikolojisi</span>
+            <span id="question-counter">Soru 1 / 5</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-bar"></div>
+        </div>
+    </div>
+
+    <div class="main-content" id="quiz-area">
+        <div class="question-text" id="question-text">Soru metni yükleniyor...</div>
+        <div class="options-container" id="options-container">
+            </div>
+    </div>
+
+    <div class="footer" id="footer-area">
+        <button class="next-btn" id="next-btn" onclick="nextQuestion()">Sıradaki Soru ➔</button>
+    </div>
+
+    <div id="result-screen">
+        <h2 style="margin-top:0; color:#111827;">Sınav Tamamlandı!</h2>
+        <div class="score-circle" id="score-text">0/5</div>
+        <p style="color:#4b5563; font-size:16px;">Tebrikler, Eğitim Psikolojisi çalışma testini bitirdiniz.</p>
+        <button class="restart-btn" onclick="location.reload()">↻ Testi Yeniden Başlat</button>
+    </div>
+
+    <script>
+        // PDF'ten çıkarılan örnek veri seti. Geri kalanları buraya aynı formatta ekleyebilirsin.
+        // Doğru cevabın index numarasını (0, 1, 2, 3, 4) 'correct' kısmına yazmalısın.
+        const quizData = [
+            {
+                question: "\"Çocuklar bu dönemde bütün parça ilişkisini kuramazlar. Örn, Bilyelerden maviler mi çok yoksa kırmızılar mı? sorusuna 'maviler' diyerek doğru cevabı verebilirler ancak bilyelerin tamamı mı daha çok yoksa maviler mi? sorusuna da 'maviler' cevabını verirler.\" Bu anlatımda hangi dönem çocuğundan bahsedilmektedir?",
+                options: ["A) Somut işlemler dönemi", "B) Eylemsel dönem", "C) İşlem öncesi dönem", "D) Somut öncesi dönem", "E) İşlemsel dönem"],
+                correct: 2 // C şıkkı doğru
+            },
+            {
+                question: "Freud'un Psiko seksüel Gelişim Kuramına göre çocuk hangi dönemde cinsiyet farklılıklarını keşfeder?",
+                options: ["A) Oral", "B) Anal", "C) Fallik", "D) Latans", "E) Genital"],
+                correct: 2 
+            },
+            {
+                question: "Ayşe, babasına \"hadi baba atçılık oynayalım.\" demiş ve babasının üzerine binerek evde atçılık oynamaya başlamışlardır. Ayşe'nin bu davranışı ile ilgili olarak hangisi doğrudur?",
+                options: ["A) Özelden özele akıl yürütme yapmaktadır", "B) Animistik düşünce söz konusudur", "C) Benmerkezlilik söz konusudur", "D) Sembolik oyun oynamaktadır", "E) Paralel oyun oynamaktadır"],
+                correct: 3 
+            },
+            {
+                question: "\"İhtiyacınız ne ise onu karşılamak için harekete geçersiniz; davranışların yönlendiricisi aslında bireylerin karşılanmayı bekleyen ihtiyaçlarıdır.\" Bu ifade aşağıdaki kavramlardan hangisi ile davranışları açıklamaktadır?",
+                options: ["A) Tutum", "B) Duygu", "C) Düşünce", "D) Motivasyon", "E) Patoloji"],
+                correct: 3
+            },
+            {
+                question: "Tuvalet eğitimi sırasında katı, cezalandırıcı davranışlara maruz kalmış bir çocukta aşağıdakilerden hangisinin yetişkinlik döneminde görülmesi beklenemez?",
+                options: ["A) Aşırı düzenli olma", "B) İnatçı olma", "C) Girişimci olma", "D) Katı görüşlü olma", "E) Cimri olma"],
+                correct: 2
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        const questionTextElement = document.getElementById("question-text");
+        const optionsContainer = document.getElementById("options-container");
+        const nextButton = document.getElementById("next-btn");
+        const progressFill = document.getElementById("progress-bar");
+        const counterText = document.getElementById("question-counter");
+
+        // Sayfa açıldığında ilk soruyu yükle
+        function loadQuestion() {
+            // İleri butonunu gizle
+            nextButton.style.display = "none";
+            optionsContainer.innerHTML = "";
+
+            const currentData = quizData[currentQuestionIndex];
+            
+            // Soru Metnini Yazdır
+            questionTextElement.innerText = currentData.question;
+
+            // İlerleme çubuğu ve sayacı güncelle
+            let currentQNum = currentQuestionIndex + 1;
+            counterText.innerText = `Soru ${currentQNum} / ${quizData.length}`;
+            progressFill.style.width = `${(currentQNum / quizData.length) * 100}%`;
+
+            // Şıkları oluştur
+            currentData.options.forEach((optionText, index) => {
+                const button = document.createElement("button");
+                button.className = "option-btn";
+                button.innerText = optionText;
+                button.onclick = () => selectOption(button, index);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        // Şıkkı seçince çalışan fonksiyon
+        function selectOption(selectedButton, selectedIndex) {
+            const currentData = quizData[currentQuestionIndex];
+            const allButtons = optionsContainer.querySelectorAll(".option-btn");
+
+            // Bütün butonları tıklanamaz yap
+            allButtons.forEach(btn => {
+                btn.disabled = true;
+                btn.style.cursor = "default";
+            });
+
+            // Doğru mu Yanlış mı kontrol et
+            if (selectedIndex === currentData.correct) {
+                selectedButton.classList.add("correct");
+                score++;
+            } else {
+                selectedButton.classList.add("wrong");
+                // Kullanıcı yanlış bilse bile doğruyu yeşil yakarak göster
+                allButtons[currentData.correct].classList.add("correct");
+            }
+
+            // İleri butonunu göster
+            nextButton.style.display = "block";
+        }
+
+        // İleri butonuna basınca çalışan fonksiyon
+        function nextQuestion() {
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        // Sınav bittiğinde sonuçları göster
+        function showResults() {
+            document.getElementById("quiz-area").style.display = "none";
+            document.getElementById("footer-area").style.display = "none";
+            document.getElementById("header-area").style.display = "none";
+            
+            const resultScreen = document.getElementById("result-screen");
+            resultScreen.style.display = "flex";
+            document.getElementById("score-text").innerText = `${score}/${quizData.length}`;
+        }
+
+        // Sistemi başlat
+        loadQuestion();
+    </script>
+</body>
+</html>
