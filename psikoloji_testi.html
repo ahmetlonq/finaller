@@ -11,7 +11,7 @@
         body { 
             margin: 0; 
             padding: 20px 10px; 
-            background-color: #e5e7eb; /* Kartın öne çıkması için koyu gri arka plan */
+            background-color: #e5e7eb;
             color: #1f2937; 
             display: flex; 
             min-height: 100vh;
@@ -19,7 +19,6 @@
             align-items: center;
         }
 
-        /* Ana Kart (Blok) Tasarımı */
         .quiz-card {
             background: #ffffff;
             width: 100%;
@@ -31,7 +30,6 @@
             overflow: hidden;
         }
 
-        /* --- ÜST ÇERÇEVE (İstatistikler) --- */
         .quiz-header {
             background: #f8fafc;
             padding: 20px;
@@ -63,7 +61,6 @@
         .progress-bg { width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
         .progress-fill { height: 100%; background: #3b82f6; border-radius: 3px; width: 0%; transition: 0.3s; }
 
-        /* --- ORTA BLOK (Soru ve Şıklar) --- */
         .quiz-body {
             padding: 30px 20px;
             flex-grow: 1;
@@ -94,12 +91,10 @@
         }
         .option-btn:hover:not(:disabled) { border-color: #cbd5e1; background: #f8fafc; }
         
-        /* Şık Durum Renkleri */
         .option-btn.correct { background: #dcfce7 !important; border-color: #22c55e !important; color: #166534 !important; font-weight: 700; }
         .option-btn.wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; font-weight: 700; }
         .option-btn:disabled { cursor: default; opacity: 0.9; }
 
-        /* --- ALT ÇERÇEVE (Butonlar) --- */
         .quiz-footer {
             background: #f8fafc;
             padding: 20px;
@@ -133,7 +128,6 @@
         
         .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        /* Sonuç Ekranı */
         #result-screen { display: none; text-align: center; padding: 50px 20px; flex-grow: 1; }
         .result-circle { width: 100px; height: 100px; background: #eff6ff; border: 4px solid #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; color: #1d4ed8; margin: 0 auto 20px auto; }
     </style>
@@ -155,8 +149,7 @@
 
         <div class="quiz-body" id="quiz-area">
             <div class="question-text" id="question-text">Soru yükleniyor...</div>
-            <div class="options-container" id="options-container">
-                </div>
+            <div class="options-container" id="options-container"></div>
         </div>
 
         <div class="quiz-footer" id="footer-area">
@@ -175,7 +168,6 @@
     </div>
 
     <script>
-        // Soru Veritabanı
         const quizData = [
             {
                 question: "\"Çocuklar bu dönemde bütün parça ilişkisini kuramazlar. Örn, Bilyelerden maviler mi çok yoksa kırmızılar mı? sorusuna 'maviler' diyerek doğru cevabı verebilirler ancak bilyelerin tamamı mı daha çok yoksa maviler mi? sorusuna da 'maviler' cevabını verirler.\" Bu anlatımda hangi dönem çocuğundan bahsedilmektedir?",
@@ -204,10 +196,7 @@
             }
         ];
 
-        // Kullanıcının verdiği cevapları saklayacağımız alan (Geri gelindiğinde hatırlanması için)
-        quizData.forEach(q => {
-            q.userAnswer = null; // null: Boş, 0-4: Seçilen Şık, -1: Cevabı Gösterildi (Pas)
-        });
+        quizData.forEach(q => { q.userAnswer = null; });
 
         let currentIndex = 0;
         let correctCount = 0;
@@ -222,81 +211,66 @@
         function loadQuestion() {
             const q = quizData[currentIndex];
             
-            // Üst Bar Güncelleme
             document.getElementById("question-counter").innerText = `Soru: ${currentIndex + 1} / ${quizData.length}`;
             document.getElementById("progress-bar").style.width = `${((currentIndex + 1) / quizData.length) * 100}%`;
             document.getElementById("correct-text").innerText = `Doğru: ${correctCount}`;
             document.getElementById("wrong-text").innerText = `Yanlış: ${wrongCount}`;
 
-            // Soru Metni ve Şıkları Temizleme
             qText.innerText = q.question;
             optContainer.innerHTML = "";
 
-            // Şıkları Ekrana Basma
             q.options.forEach((opt, index) => {
                 const btn = document.createElement("button");
                 btn.className = "option-btn";
                 btn.innerText = opt;
                 
-                // Eğer soru daha önce cevaplandıysa veya cevabı gösterildiyse
                 if (q.userAnswer !== null) {
-                    btn.disabled = true; // Şıkları kilitle
-                    
+                    btn.disabled = true;
                     if (index === q.correct) {
-                        btn.classList.add("correct"); // Doğru şıkkı her halükarda yeşil yak
-                    } 
-                    else if (index === q.userAnswer && q.userAnswer !== -1) {
-                        btn.classList.add("wrong"); // Eğer yanlış şıkkı seçtiyse onu kırmızı yak
+                        btn.classList.add("correct"); 
+                    } else if (index === q.userAnswer && q.userAnswer !== -1) {
+                        btn.classList.add("wrong"); 
                     }
-                } 
-                // Eğer soru henüz cevaplanmadıysa
-                else {
+                } else {
                     btn.onclick = () => selectOption(index);
                 }
-                
                 optContainer.appendChild(btn);
             });
 
-            // Alt Butonların Durum Kontrolleri
-            btnPrev.disabled = currentIndex === 0; // İlk sorudaysa Geri butonunu kilitle
+            btnPrev.disabled = currentIndex === 0; 
             
-            // Soru cevaplandıysa "Cevabı Göster" butonunu kapat, "İleri" butonunu aç
             if (q.userAnswer !== null) {
                 btnCheck.disabled = true;
                 btnNext.disabled = false;
                 btnNext.innerText = (currentIndex === quizData.length - 1) ? "Bitir ✓" : "İleri ➔";
             } else {
                 btnCheck.disabled = false;
-                btnNext.disabled = true; // Cevap vermeden ileri geçilmez!
+                btnNext.disabled = true; 
                 btnNext.innerText = "İleri ➔";
             }
         }
 
-        // Şıkka Tıklandığında Çalışan Fonksiyon
         function selectOption(index) {
             const q = quizData[currentIndex];
-            if (q.userAnswer !== null) return; // Zaten cevaplandıysa işlem yapma
+            if (q.userAnswer !== null) return; 
             
-            q.userAnswer = index; // Kullanıcının cevabını kaydet
+            q.userAnswer = index; 
             
-            // Skoru Güncelle
             if (index === q.correct) {
                 correctCount++;
             } else {
                 wrongCount++;
             }
 
-            loadQuestion(); // Ekranı renklerle yeniden çiz
+            loadQuestion(); 
         }
 
-        // "Cevabı Göster" Butonuna Basıldığında
         function showAnswer() {
             const q = quizData[currentIndex];
             if (q.userAnswer !== null) return;
             
-            q.userAnswer = -1; // -1 kodu "Cevabı Gösterildi / Pas Geçildi" anlamına gelir
-            wrongCount++; // Bilemediği için yanlış kabul edilir
-            
+            q.userAnswer = -1; 
+            wrongCount++; 
             loadQuestion();
         }
 
@@ -320,344 +294,10 @@
             document.getElementById("header-area").style.display = "none";
             document.getElementById("quiz-area").style.display = "none";
             document.getElementById("footer-area").style.display = "none";
-            
             document.getElementById("result-screen").style.display = "block";
             document.getElementById("score-result").innerText = `${correctCount}/${quizData.length}`;
         }
 
-        // Sistemi Başlat
-        loadQuestion();
-    </script>
-</body>
-</html>
-            padding: 20px;
-            border-bottom: 2px solid #e2e8f0;
-        }
-        .stats-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .q-counter {
-            font-size: 16px;
-            font-weight: 700;
-            color: #3b82f6;
-            background: #eff6ff;
-            padding: 6px 12px;
-            border-radius: 8px;
-        }
-        .score-badges {
-            display: flex;
-            gap: 10px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .badge-correct { color: #16a34a; background: #dcfce7; padding: 6px 10px; border-radius: 6px; }
-        .badge-wrong { color: #dc2626; background: #fee2e2; padding: 6px 10px; border-radius: 6px; }
-        
-        .progress-bg { width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; }
-        .progress-fill { height: 100%; background: #3b82f6; border-radius: 3px; width: 0%; transition: 0.3s; }
-
-        /* --- ORTA BLOK (Soru ve Şıklar) --- */
-        .quiz-body {
-            padding: 30px 20px;
-            flex-grow: 1;
-        }
-        .question-text {
-            font-size: 17px;
-            font-weight: 600;
-            line-height: 1.6;
-            margin-bottom: 25px;
-            color: #111827;
-        }
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .option-btn {
-            background: #ffffff;
-            border: 2px solid #e2e8f0;
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 500;
-            text-align: left;
-            color: #334155;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .option-btn:hover:not(:disabled) { border-color: #cbd5e1; background: #f8fafc; }
-        
-        /* Şık Durum Renkleri */
-        .option-btn.selected { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; font-weight: 600; }
-        .option-btn.correct { background: #dcfce7 !important; border-color: #22c55e !important; color: #166534 !important; }
-        .option-btn.wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; }
-        .option-btn:disabled { cursor: default; }
-
-        /* --- ALT ÇERÇEVE (Butonlar) --- */
-        .quiz-footer {
-            background: #f8fafc;
-            padding: 20px;
-            border-top: 2px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
-        .nav-btn {
-            flex: 1;
-            padding: 14px 10px;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: 0.2s;
-        }
-        .btn-prev { background: #e2e8f0; color: #475569; }
-        .btn-prev:hover:not(:disabled) { background: #cbd5e1; }
-        
-        .btn-check { background: #f59e0b; color: white; flex: 1.5; }
-        .btn-check:hover:not(:disabled) { background: #d97706; }
-        
-        .btn-next { background: #3b82f6; color: white; }
-        .btn-next:hover:not(:disabled) { background: #2563eb; }
-        
-        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        /* Sonuç Ekranı */
-        #result-screen { display: none; text-align: center; padding: 50px 20px; }
-        .result-circle { width: 100px; height: 100px; background: #eff6ff; border: 4px solid #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; color: #1d4ed8; margin: 0 auto 20px auto; }
-    </style>
-</head>
-<body>
-
-    <div class="quiz-card" id="quiz-card">
-        
-        <div class="quiz-header" id="header-area">
-            <div class="stats-row">
-                <div class="q-counter" id="question-counter">Aşama: 1 / 5</div>
-                <div class="score-badges">
-                    <div class="badge-correct" id="correct-text">Doğru: 0</div>
-                    <div class="badge-wrong" id="wrong-text">Yanlış: 0</div>
-                </div>
-            </div>
-            <div class="progress-bg"><div class="progress-fill" id="progress-bar"></div></div>
-        </div>
-
-        <div class="quiz-body" id="quiz-area">
-            <div class="question-text" id="question-text">Soru yükleniyor...</div>
-            <div class="options-container" id="options-container">
-                </div>
-        </div>
-
-        <div class="quiz-footer" id="footer-area">
-            <button class="nav-btn btn-prev" id="btn-prev" onclick="prevQuestion()">◂ Geri</button>
-            <button class="nav-btn btn-check" id="btn-check" onclick="checkAnswer()">👁️ Cevabı Göster</button>
-            <button class="nav-btn btn-next" id="btn-next" onclick="nextQuestion()">İleri ➔</button>
-        </div>
-
-        <div id="result-screen">
-            <h2 style="margin-top:0; color:#111827;">Test Tamamlandı!</h2>
-            <div class="result-circle" id="score-result">0/5</div>
-            <p style="color:#4b5563; font-size:16px;">Performans analiziniz kaydedildi.</p>
-            <button class="nav-btn btn-next" style="width: 100%; margin-top: 20px;" onclick="location.reload()">↻ Yeniden Çöz</button>
-        </div>
-
-    </div>
-
-    <script>
-        // Soru Veritabanı
-        const quizData = [
-            {
-                question: "\"Çocuklar bu dönemde bütün parça ilişkisini kuramazlar. Örn, Bilyelerden maviler mi çok yoksa kırmızılar mı? sorusuna 'maviler' diyerek doğru cevabı verebilirler ancak bilyelerin tamamı mı daha çok yoksa maviler mi? sorusuna da 'maviler' cevabını verirler.\" Bu anlatımda hangi dönem çocuğundan bahsedilmektedir?",
-                options: ["A) Somut işlemler dönemi", "B) Eylemsel dönem", "C) İşlem öncesi dönem", "D) Somut öncesi dönem", "E) İşlemsel dönem"],
-                correct: 2 
-            },
-            {
-                question: "Freud'un Psiko seksüel Gelişim Kuramına göre çocuk hangi dönemde cinsiyet farklılıklarını keşfeder?",
-                options: ["A) Oral", "B) Anal", "C) Fallik", "D) Latans", "E) Genital"],
-                correct: 2 
-            },
-            {
-                question: "Ayşe, babasına \"hadi baba atçılık oynayalım.\" demiş ve babasının üzerine binerek evde atçılık oynamaya başlamışlardır. Ayşe'nin bu davranışı ile ilgili olarak hangisi doğrudur?",
-                options: ["A) Özelden özele akıl yürütme yapmaktadır", "B) Animistik düşünce söz konusudur", "C) Benmerkezlilik söz konusudur", "D) Sembolik oyun oynamaktadır", "E) Paralel oyun oynamaktadır"],
-                correct: 3 
-            },
-            {
-                question: "\"İhtiyacınız ne ise onu karşılamak için harekete geçersiniz; davranışların yönlendiricisi aslında bireylerin karşılanmayı bekleyen ihtiyaçlarıdır.\" Bu ifade aşağıdaki kavramlardan hangisi ile davranışları açıklamaktadır?",
-                options: ["A) Tutum", "B) Duygu", "C) Düşünce", "D) Motivasyon", "E) Patoloji"],
-                correct: 3
-            },
-            {
-                question: "Tuvalet eğitimi sırasında katı, cezalandırıcı davranışlara maruz kalmış bir çocukta aşağıdakilerden hangisinin yetişkinlik döneminde görülmesi beklenemez?",
-                options: ["A) Aşırı düzenli olma", "B) İnatçı olma", "C) Girişimci olma", "D) Katı görüşlü olma", "E) Cimri olma"],
-                correct: 2
-            }
-        ];
-
-        // Sorulara kullanıcı cevabını tutacak alan ekliyoruz (Geri dönüldüğünde hatırlaması için)
-        quizData.forEach(q => {
-            q.selectedTemp = null; // Tıklanan ama henüz onaylanmayan şık
-            q.userAnswer = null;   // Onaylanmış kalıcı cevap
-        });
-
-        let currentIndex = 0;
-        let correctCount = 0;
-        let wrongCount = 0;
-
-        const qText = document.getElementById("question-text");
-        const optContainer = document.getElementById("options-container");
-        const btnPrev = document.getElementById("btn-prev");
-        const btnCheck = document.getElementById("btn-check");
-        const btnNext = document.getElementById("btn-next");
-
-        function loadQuestion() {
-            const q = quizData[currentIndex];
-            
-            // Üst Bar Güncelleme
-            document.getElementById("question-counter").innerText = `Aşama: ${currentIndex + 1} / ${quizData.length}`;
-            document.getElementById("progress-bar").style.width = `${((currentIndex + 1) / quizData.length) * 100}%`;
-            document.getElementById("correct-text").innerText = `Doğru: ${correctCount}`;
-            document.getElementById("wrong-text").innerText = `Yanlış: ${wrongCount}`;
-
-            // Soru Metni
-            qText.innerText = q.question;
-            optContainer.innerHTML = "";
-
-            // Şıkları Oluşturma
-            q.options.forEach((opt, index) => {
-                const btn = document.createElement("button");
-                btn.className = "option-btn";
-                btn.innerText = opt;
-                
-                // Eğer soru daha önce cevaplandıysa (Geri tuşu ile gelindiyse)
-                if (q.userAnswer !== null) {
-                    btn.disabled = true;
-                    if (index === q.correct) btn.classList.add("correct");
-                    else if (index === q.userAnswer) btn.classList.add("wrong");
-                } 
-                // Henüz cevaplanmadıysa ama seçildiyse (mavi çerçeve)
-                else {
-                    if (index === q.selectedTemp) btn.classList.add("selected");
-                    btn.onclick = () => selectOption(index);
-                }
-                optContainer.appendChild(btn);
-            });
-
-            // Alt Buton Kontrolleri
-            btnPrev.disabled = currentIndex === 0; // İlk sorudaysa Geri tuşunu kapat
-            
-            if (q.userAnswer !== null) {
-                btnCheck.disabled = true;
-                btnCheck.innerText = "Cevaplandı ✓";
-            } else {
-                btnCheck.disabled = false;
-                btnCheck.innerText = "👁️ Cevabı Göster";
-            }
-        }
-
-        // Şıkka Tıklama (Sadece seçer, anında doğru/yanlış demez)
-        function selectOption(index) {
-            const q = quizData[currentIndex];
-            if (q.userAnswer !== null) return; 
-            
-            q.selectedTemp = index;
-            loadQuestion(); // Ekranı yenile (Mavi çerçeveyi göstermek için)
-        }
-
-        // "Cevabı Göster" Butonu İşlevi
-        function checkAnswer() {
-            const q = quizData[currentIndex];
-            if (q.userAnswer !== null) return; // Zaten kontrol edildiyse çık
-            
-            if (q.selectedTemp === null) {
-                alert("Lütfen önce bir şık işaretleyin!");
-                return;
-            }
-
-            q.userAnswer = q.selectedTemp; // Geçici seçimi kalıcı yap
-
-            if (q.userAnswer === q.correct) correctCount++;
-            else wrongCount++;
-
-            loadQuestion(); // Renkleri ve sayaçları güncellemek için ekranı yenile
-        }
-
-        function nextQuestion() {
-            // Eğer öğrenci şık seçmiş ama "Cevabı Göster" dememişse uyar
-            if (quizData[currentIndex].selectedTemp !== null && quizData[currentIndex].userAnswer === null) {
-                alert("Lütfen ilerlemeden önce 'Cevabı Göster' butonuna basarak cevabınızı onaylayın.");
-                return;
-            }
-
-            if (currentIndex < quizData.length - 1) {
-                currentIndex++;
-                loadQuestion();
-            } else {
-                finishQuiz();
-            }
-        }
-
-        function prevQuestion() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                loadQuestion();
-            }
-        }
-
-        function finishQuiz() {
-            document.getElementById("header-area").style.display = "none";
-            document.getElementById("quiz-area").style.display = "none";
-            document.getElementById("footer-area").style.display = "none";
-            
-            document.getElementById("result-screen").style.display = "block";
-            document.getElementById("score-result").innerText = `${correctCount}/${quizData.length}`;
-        }
-
-        // Başlat
-        loadQuestion();
-    </script>
-</body>
-</html>
-   // Doğru mu Yanlış mı kontrol et
-            if (selectedIndex === currentData.correct) {
-                selectedButton.classList.add("correct");
-                score++;
-            } else {
-                selectedButton.classList.add("wrong");
-                // Kullanıcı yanlış bilse bile doğruyu yeşil yakarak göster
-                allButtons[currentData.correct].classList.add("correct");
-            }
-
-            // İleri butonunu göster
-            nextButton.style.display = "block";
-        }
-
-        // İleri butonuna basınca çalışan fonksiyon
-        function nextQuestion() {
-            currentQuestionIndex++;
-
-            if (currentQuestionIndex < quizData.length) {
-                loadQuestion();
-            } else {
-                showResults();
-            }
-        }
-
-        // Sınav bittiğinde sonuçları göster
-        function showResults() {
-            document.getElementById("quiz-area").style.display = "none";
-            document.getElementById("footer-area").style.display = "none";
-            document.getElementById("header-area").style.display = "none";
-            
-            const resultScreen = document.getElementById("result-screen");
-            resultScreen.style.display = "flex";
-            document.getElementById("score-text").innerText = `${score}/${quizData.length}`;
-        }
-
-        // Sistemi başlat
         loadQuestion();
     </script>
 </body>
