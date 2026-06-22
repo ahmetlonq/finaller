@@ -6,45 +6,47 @@
     <title>AGS Deneme - Eğitim Psikolojisi (Tam Sürüm)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+                * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         
         body { 
             margin: 0; 
-            padding: 20px 10px; 
+            padding: 15px 10px; /* Kenar boşluklarını mobilde daha şık durması için kıstık */
             background-color: #e5e7eb;
             color: #1f2937; 
             display: flex; 
-            min-height: 100vh;
+            height: 100vh; /* Eski tarayıcılar için destek */
+            height: 100dvh; /* Yeni nesil mobil tarayıcılarda tam ekran kilidi */
             justify-content: center;
             align-items: center;
+            overflow: hidden; /* Sayfanın GÖVDESİNİN kaymasını KESİNLİKLE engeller */
         }
 
         .quiz-card {
             background: #ffffff;
             width: 100%;
             max-width: 700px;
-            border-radius: 20px;
+            border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
+            max-height: 100%; /* Kartın ekranın dışına taşmasını engeller */
             overflow: hidden;
-            max-height: 95vh;
         }
 
         .quiz-header {
             background: #f8fafc;
-            padding: 20px;
+            padding: 15px; /* Mobilde alan kazanmak için biraz daralttık */
             border-bottom: 2px solid #e2e8f0;
-            flex-shrink: 0;
+            flex-shrink: 0; /* Üst barın ezilmesini engeller */
         }
         .stats-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         .q-counter {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             color: #3b82f6;
             background: #eff6ff;
@@ -53,26 +55,26 @@
         }
         .score-badges {
             display: flex;
-            gap: 8px;
-            font-size: 14px;
+            gap: 6px;
+            font-size: 13px;
             font-weight: 600;
         }
-        .badge-correct { color: #16a34a; background: #dcfce7; padding: 6px 10px; border-radius: 6px; }
-        .badge-wrong { color: #dc2626; background: #fee2e2; padding: 6px 10px; border-radius: 6px; }
+        .badge-correct { color: #16a34a; background: #dcfce7; padding: 6px 8px; border-radius: 6px; }
+        .badge-wrong { color: #dc2626; background: #fee2e2; padding: 6px 8px; border-radius: 6px; }
         
         .progress-bg { width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
         .progress-fill { height: 100%; background: #3b82f6; border-radius: 3px; width: 0%; transition: 0.3s; }
 
         .quiz-body {
-            padding: 30px 20px;
-            overflow-y: auto;
-            flex-grow: 1;
+            padding: 20px 15px;
+            overflow-y: auto; /* İŞTE SİHİR BURADA: Sadece sorular kendi içinde kayacak */
+            flex-grow: 1; /* Ortadaki boşluğu tamamen dolduracak */
         }
         .question-text {
             font-size: 16px;
             font-weight: 600;
-            line-height: 1.6;
-            margin-bottom: 25px;
+            line-height: 1.5;
+            margin-bottom: 20px;
             color: #111827;
         }
         .options-container {
@@ -101,16 +103,16 @@
 
         .quiz-footer {
             background: #f8fafc;
-            padding: 20px;
+            padding: 15px;
             border-top: 2px solid #e2e8f0;
             display: flex;
             justify-content: space-between;
-            gap: 10px;
-            flex-shrink: 0;
+            gap: 8px;
+            flex-shrink: 0; /* Alt barın ezilmesini engeller */
         }
         .nav-btn {
             flex: 1;
-            padding: 14px 10px;
+            padding: 12px 8px;
             border-radius: 10px;
             font-size: 14px;
             font-weight: 600;
@@ -120,7 +122,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 4px;
         }
         .btn-prev { background: #e2e8f0; color: #475569; }
         .btn-prev:hover:not(:disabled) { background: #cbd5e1; }
@@ -135,6 +137,7 @@
 
         #result-screen { display: none; text-align: center; padding: 50px 20px; flex-grow: 1; justify-content: center; flex-direction: column; }
         .result-circle { width: 100px; height: 100px; background: #eff6ff; border: 4px solid #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; color: #1d4ed8; margin: 0 auto 20px auto; }
+        
     </style>
 </head>
 <body>
