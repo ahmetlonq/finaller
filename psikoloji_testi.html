@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AGS Deneme - Eğitim Psikolojisi</title>
+    <title>AGS Deneme - Eğitim Psikolojisi (Tam Sürüm)</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -22,18 +22,20 @@
         .quiz-card {
             background: #ffffff;
             width: 100%;
-            max-width: 650px;
+            max-width: 700px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            max-height: 95vh;
         }
 
         .quiz-header {
             background: #f8fafc;
             padding: 20px;
             border-bottom: 2px solid #e2e8f0;
+            flex-shrink: 0;
         }
         .stats-row {
             display: flex;
@@ -63,10 +65,11 @@
 
         .quiz-body {
             padding: 30px 20px;
+            overflow-y: auto;
             flex-grow: 1;
         }
         .question-text {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 600;
             line-height: 1.6;
             margin-bottom: 25px;
@@ -75,19 +78,20 @@
         .options-container {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
         .option-btn {
             background: #ffffff;
             border: 2px solid #e2e8f0;
-            padding: 15px;
+            padding: 14px;
             border-radius: 12px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 500;
             text-align: left;
             color: #334155;
             cursor: pointer;
             transition: all 0.2s;
+            line-height: 1.4;
         }
         .option-btn:hover:not(:disabled) { border-color: #cbd5e1; background: #f8fafc; }
         
@@ -102,6 +106,7 @@
             display: flex;
             justify-content: space-between;
             gap: 10px;
+            flex-shrink: 0;
         }
         .nav-btn {
             flex: 1;
@@ -128,7 +133,7 @@
         
         .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        #result-screen { display: none; text-align: center; padding: 50px 20px; flex-grow: 1; }
+        #result-screen { display: none; text-align: center; padding: 50px 20px; flex-grow: 1; justify-content: center; flex-direction: column; }
         .result-circle { width: 100px; height: 100px; background: #eff6ff; border: 4px solid #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; color: #1d4ed8; margin: 0 auto 20px auto; }
     </style>
 </head>
@@ -138,7 +143,7 @@
         
         <div class="quiz-header" id="header-area">
             <div class="stats-row">
-                <div class="q-counter" id="question-counter">Soru: 1 / 5</div>
+                <div class="q-counter" id="question-counter">Soru: 1 / 75</div>
                 <div class="score-badges">
                     <div class="badge-correct" id="correct-text">Doğru: 0</div>
                     <div class="badge-wrong" id="wrong-text">Yanlış: 0</div>
@@ -154,48 +159,400 @@
 
         <div class="quiz-footer" id="footer-area">
             <button class="nav-btn btn-prev" id="btn-prev" onclick="prevQuestion()">◂ Geri</button>
-            <button class="nav-btn btn-check" id="btn-check" onclick="showAnswer()">👁️ Cevabı Göster</button>
+            <button class="nav-btn btn-check" id="btn-check" onclick="showAnswer()">👁️ Pas Geç / Cevabı Gör</button>
             <button class="nav-btn btn-next" id="btn-next" onclick="nextQuestion()">İleri ➔</button>
         </div>
 
         <div id="result-screen">
-            <h2 style="margin-top:0; color:#111827;">Test Tamamlandı!</h2>
-            <div class="result-circle" id="score-result">0/5</div>
-            <p style="color:#4b5563; font-size:16px;">Performans analiziniz kaydedildi.</p>
-            <button class="nav-btn btn-next" style="width: 100%; margin-top: 20px;" onclick="location.href='index.html'">⌂ Ana Ekrana Dön</button>
+            <h2 style="margin-top:0; color:#111827;">Sınav Tamamlandı!</h2>
+            <div class="result-circle" id="score-result">0/75</div>
+            <p style="color:#4b5563; font-size:16px;">Performans analiziniz kaydedildi. Final denemesini başarıyla bitirdiniz!</p>
+            <button class="nav-btn btn-next" style="width: 100%; margin-top: 20px; padding: 18px;" onclick="location.href='index.html'">⌂ Ana Ekrana Dön</button>
         </div>
 
     </div>
 
     <script>
+        // --- 75 SORULUK EKSİKSİZ EĞİTİM PSİKOLOJİSİ VERİTABANI ---
         const quizData = [
             {
-                question: "\"Çocuklar bu dönemde bütün parça ilişkisini kuramazlar. Örn, Bilyelerden maviler mi çok yoksa kırmızılar mı? sorusuna 'maviler' diyerek doğru cevabı verebilirler ancak bilyelerin tamamı mı daha çok yoksa maviler mi? sorusuna da 'maviler' cevabını verirler.\" Bu anlatımda hangi dönem çocuğundan bahsedilmektedir?",
-                options: ["A) Somut işlemler dönemi", "B) Eylemsel dönem", "C) İşlem öncesi dönem", "D) Somut öncesi dönem", "E) İşlemsel dönem"],
-                correct: 2 
+                question: "1- Öğretmenler okuma yazma öğrenen çocuklara kurdele takarlar. Kurdele uygulaması bir pekiştireç olarak anlamlı olsa da gelişimin temel bir ilkesi ile uyuşmamaktadır. Bu ilke hangisi olabilir?",
+                options: ["A) Gelişim bir süreçtir", "B) Gelişim kalıtımsal ve çevresel faktörlerin sonucudur", "C) Gelişim kalıtımsal bir olaydır", "D) Gelişim alanları etkileşim içerisindedir", "E) Gelişim çevresel bir süreçtir"],
+                correct: 0
             },
             {
-                question: "Freud'un Psiko seksüel Gelişim Kuramına göre çocuk hangi dönemde cinsiyet farklılıklarını keşfeder?",
-                options: ["A) Oral", "B) Anal", "C) Fallik", "D) Latans", "E) Genital"],
-                correct: 2 
+                question: "2- İlköğretimde ilk defa gezegenler hakkında bilgi öğrenen bir çocuğun yaşayabileceği bilişsel süreç nasıl olmalıdır?",
+                options: ["A) Denge - Şema - Özümleme - Örgütleme - Uyum - Dengesizlik", "B) Denge - Dengesizlik - Özümleme - Uyum - Uzlaşma - Şema - Denge", "C) Dengesizlik - Uyum - Özümleme - Uzlaşma - Örgütleme", "D) Denge - Dengesizlik - Örgütleme - Uzlaşma - Şema", "E) Denge - Dengesizlik - Özümleme - Uyum - Denge - Örgütleme - Şema"],
+                correct: 4
             },
             {
-                question: "Ayşe, babasına \"hadi baba atçılık oynayalım.\" demiş ve babasının üzerine binerek evde atçılık oynamaya başlamışlardır. Ayşe'nin bu davranışı ile ilgili olarak hangisi doğrudur?",
+                question: "3- Ayşe, babasına \"hadi baba atçılık oynayalım\" demiş ve babasının üzerine binerek evde atçılık oynamaya başlamışlardır. Ayşe'nin bu davranışı hangisi ile açıklanır?",
                 options: ["A) Özelden özele akıl yürütme yapmaktadır", "B) Animistik düşünce söz konusudur", "C) Benmerkezlilik söz konusudur", "D) Sembolik oyun oynamaktadır", "E) Paralel oyun oynamaktadır"],
-                correct: 3 
+                correct: 3
             },
             {
-                question: "\"İhtiyacınız ne ise onu karşılamak için harekete geçersiniz; davranışların yönlendiricisi aslında bireylerin karşılanmayı bekleyen ihtiyaçlarıdır.\" Bu ifade aşağıdaki kavramlardan hangisi ile davranışları açıklamaktadır?",
+                question: "4- Bir öğretmenin öğrenme psikoloji verilerinden yararlanarak ders anlattığını aşağıdakilerden hangisi göstermez?",
+                options: ["A) Öğrenme sorunu yaşayanları dikkate alması", "B) Yanlışları bularak dönüt vermesi", "C) Davranış değiştirme tekniklerinden yararlanması", "D) Bireysel farklılıkları kabul ederek sınıfta 'ortalamaya göre' ders yapması", "E) Problemlerin çözümünde öğrenme ilkelerinden yararlanması"],
+                correct: 3
+            },
+            {
+                question: "5- \"Çocuklar bu dönemde bütün parça ilişkisini kuramazlar. Örn: Bilyelerden maviler mi çok yoksa kırmızılar mı? sorusuna 'maviler' diyebilirler ancak tamamı mı daha çok yoksa maviler mi? sorusuna da 'maviler' derler.\" Hangi dönemden bahsedilmektedir?",
+                options: ["A) Somut işlemler dönemi", "B) Eylemsel dönem", "C) İşlem öncesi dönem", "D) Somut öncesi dönem", "E) İşlemsel dönem"],
+                correct: 2
+            },
+            {
+                question: "6- Bilişsel gelişmenin sosyal süreçlerin çocuklar ve yetişkinler arasında paylaşılmasından etkilendiğini, ebeveyn veya öğretmenlerin 'bir bilen' olarak gelişimdeki önemini vurgulayan görüş kime aittir?",
+                options: ["A) Bruner", "B) Vygotsky", "C) Piaget", "D) Skinner", "E) Kohlberg"],
+                correct: 1
+            },
+            {
+                question: "7- Freud'un Psiko seksüel Gelişim Kuramına göre çocuk hangi dönemde cinsiyet farklılıklarını keşfeder?",
+                options: ["A) Oral", "B) Anal", "C) Fallik", "D) Latans", "E) Genital"],
+                correct: 2
+            },
+            {
+                question: "8- Bebeklik dönemi, temel güven duygusunun gelişmesi açısından kritik bir dönemdir; bu nedenle bebeğin gereksinimlerinin karşılanmasının yanında yeterince ilgi ve sevgi de gösterilmelidir. Ne vurgulanmaktadır?",
+                options: ["A) Bilişsel gelişimin tamamlanması için iyi bir duygusal ortam", "B) Duygusal gelişimin farklı dönemlerde gerçekleştiği", "C) Duygusal gelişimin bebeklik döneminde taşıdığı önem", "D) Duygusal gelişimin olgunlaşmasıyla ilişkisi", "E) Çocuğun dünya görüşünün deneyimlere etkisi"],
+                correct: 2
+            },
+            {
+                question: "9- Eve gelen misafirlerin çocuklarıyla oynarken oyuncaklarını paylaşmak istemeyen Ayşe, annesinin uyarıcı bakışlarıyla karşılaştığında en sevdiği oyuncakları alarak diğerlerini verir. Bu hangi boyutla açıklanır?",
+                options: ["A) İd", "B) Süperego", "C) Ego", "D) Elektra", "E) Oedipus"],
+                correct: 2
+            },
+            {
+                question: "10- Tuvalet eğitimi sırasında katı, cezalandırıcı davranışlara maruz kalmış bir çocukta hangisinin yetişkinlik döneminde görülmesi beklenemez?",
+                options: ["A) Aşırı düzenli olma", "B) İnatçı olma", "C) Girişimci olma", "D) Katı görüşlü olma", "E) Cimri olma"],
+                correct: 2
+            },
+            {
+                question: "11- \"Eğer her şey çocukluk dönemi ile açıklanırsa o zaman her şey bir başkasının kusuru olarak değerlendirilir\" diyerek, Psikanalitik kurama karşı çıkan uzman kimdir?",
+                options: ["A) Piaget", "B) Freud", "C) Erikson", "D) Kohlberg", "E) Bloom"],
+                correct: 2
+            },
+            {
+                question: "12- \"İhtiyacınız ne ise onu karşılamak için harekete geçersiniz; davranışların yönlendiricisi karşılanmayı bekleyen ihtiyaçlardır.\" Hangi kavramı açıklar?",
                 options: ["A) Tutum", "B) Duygu", "C) Düşünce", "D) Motivasyon", "E) Patoloji"],
                 correct: 3
             },
             {
-                question: "Tuvalet eğitimi sırasında katı, cezalandırıcı davranışlara maruz kalmış bir çocukta aşağıdakilerden hangisinin yetişkinlik döneminde görülmesi beklenemez?",
-                options: ["A) Aşırı düzenli olma", "B) İnatçı olma", "C) Girişimci olma", "D) Katı görüşlü olma", "E) Cimri olma"],
+                question: "13- \"Bir dersi, mesleki yeterliliğinin parçası olarak görerek çalışan öğrenci ile geçer not almak için çalışan öğrenci\" farklılığı neyle ilgilidir?",
+                options: ["A) Süperego - İd İkilemi", "B) İpotekli kimlik - Başarılı kimlik", "C) Duygu - Düşünce Motivasyonu", "D) Ödül - Duygu Motivasyonu", "E) İçsel - Dışsal motivasyon"],
+                correct: 4
+            },
+            {
+                question: "14- \"Bazılarının kaderi kötüdür, bazıları doğuştan şanslıdır, herkes bu dünyaya aynı alınyazısı ile gelmiyor\" diyen birey Rotter'a göre hangisi ile açıklanır?",
+                options: ["A) Dıştan denetimli", "B) İçten denetimli", "C) Ödül temelli", "D) Çıkar temelli", "E) Kaçış psikolojisi"],
+                correct: 0
+            },
+            {
+                question: "15- \"Davranış sonuçlarının nedenlerini ararken yakınsak etmenleri büyütüp durumsal etmenleri küçümseme eğilimi\" nedir?",
+                options: ["A) Temel Tutum yerleşimi", "B) Temel Bilişsel süreçler", "C) Temel Atıf Hatası", "D) Temel Atıf Süreci", "E) Temel Tutarlılık Hatası"],
                 correct: 2
+            },
+            {
+                question: "16- \"Başarılı olduklarında kendilerini, başarısız olduklarında başkalarını sorumlu tutma eğilimi\" neyi ifade eder?",
+                options: ["A) Atıf teorisi", "B) Denetim odağı", "C) Benlik saygısı", "D) Kendine hizmet eden önyargı", "E) Kendini doğuran kehanet"],
+                correct: 3
+            },
+            {
+                question: "17- \"Bugünün yetişkinleri kitap aralarında çizgi roman okurken, günümüz çocukları internet başında zaman geçiriyor\" Bu durum neyle açıklanır?",
+                options: ["A) Kritik Dönem", "B) Deneyim", "C) Tarihsel Zaman", "D) Teknoloji", "E) Hazırbulunuşluk"],
+                correct: 2
+            },
+            {
+                question: "18- Öğrencinin gelişim dönemi göz önüne alınarak, başarısız olan lise 2. sınıf öğrencisinin durumu öncelikle hangisi ile açıklanır?",
+                options: ["A) Hazırbulunuşluk", "B) Kritik dönem", "C) Öğrenme", "D) Zihinsel olgunluk", "E) Duygusal Olgunluk"],
+                correct: 0
+            },
+            {
+                question: "19- İki yaşındaki bir çocuk salıncakta yardımsız sallanmak istemekte, annesinin ellerini itmektedir. Bu davranış hangi özelliktir?",
+                options: ["A) Yatkınlık", "B) Özerklik", "C) Üretkenlik", "D) Özdeşim", "E) Merak"],
+                correct: 1
+            },
+            {
+                question: "20- Zeynep (3 yaş), yemek yerken yanındaki bebeğine de yedirmektedir. Bu davranış nasıl açıklanır?",
+                options: ["A) Benmerkezcilik", "B) Yapaycılık", "C) Hayal kurma", "D) Nesne sürekliliği", "E) Animizm"],
+                correct: 4
+            },
+            {
+                question: "21- Ayşe, arkadaşlarının davranışı kendi çıkarına uygunsa doğru, değilse yanlış olduğunu düşünmektedir. Kohlberg'e göre hangi evrededir?",
+                options: ["A) Boyun eğme evresi", "B) Bireyselcilik / Saf çıkarcılık", "C) Üçüncü evre (İyi çocuk)", "D) Dördüncü evre", "E) Birinci evre"],
+                correct: 1
+            },
+            {
+                question: "22- Aşağıdaki ifadelerden hangisi gelişim ilkeleri ile uyuşmamaktadır?",
+                options: ["A) Kalıtım gelişimdeki en önemli etmendir", "B) Gelişim sürekli bir oluşumdur", "C) Gelişim bir bütünlük içerisinde gerçekleşir", "D) Gelişim aşamalar halinde gerçekleşir", "E) Gelişim ardışık ve düzenli ilerler"],
+                correct: 0
+            },
+            {
+                question: "23- İlköğretim öğrencisi kesirlerle toplamayı, önceden bildiği toplama işlemine göre yapmaya çalışır ama doğru olmadığını görür. Bu durum nedir?",
+                options: ["A) Dengesizlik", "B) Denge", "C) Uyumsama", "D) Özümseme", "E) Adaptasyon"],
+                correct: 0
+            },
+            {
+                question: "24- Öğretmenlerinin bayan olduğunu gören Selin 'kızlar öğretmen olur' demiştir. Selin için hangisini söylemek yanlıştır?",
+                options: ["A) Benmerkezcilik görülür", "B) Tek boyutlu düşünme hakimdir", "C) Kalıp yargılarla düşünmektedir", "D) Cinsel kimliği kazanmıştır", "E) Cinsel rolleri kazanmıştır"],
+                correct: 4
+            },
+            {
+                question: "25- Bireylerin gelişimleri kendine özgü olup, sembolleri incelemeleri, ben kavramını geliştirip kişilik geliştirmeleri hangi ilkedir?",
+                options: ["A) Gelişim bir bütündür", "B) Bireysel farklılıklar vardır", "C) Gelişim bir sıra içinde gerçekleşir", "D) Gelişimin yönü vardır", "E) Gelişim dinamiktir"],
+                correct: 0
+            },
+            {
+                question: "26- Mehmet kardeşi ile oynamaktan çok arkadaşlarıyla oynamaktadır. Çünkü kardeşi sürekli oyunlara katılıp sadece kendi isteklerinin olmasını ister. Bilişsel dönemleri sırasıyla nedir?",
+                options: ["A) Mehmet: İşlem öncesi, Kardeşi: Somut", "B) Mehmet: İşlem öncesi, Kardeşi: Soyut", "C) Mehmet: Somut işlemler, Kardeşi: İşlem öncesi", "D) Mehmet: Soyut, Kardeşi: Somut", "E) İkisi de İşlem öncesi"],
+                correct: 2
+            },
+            {
+                question: "27- Esra, kanatlıların uçabileceğini öğrendikten sonra komşularının civcivlerini uçarlar diye 2. kattan aşağı bırakmıştır. Bu durum hangisiyle açıklanır?",
+                options: ["A) Ertelenmiş taklit", "B) Korunum", "C) Analitik Düşünememe", "D) Tek yönlü düşünme / Özümleme", "E) Nesne Sürekliliği"],
+                correct: 3
+            },
+            {
+                question: "28- Nurcan 3 yaşında, kardeşi 2 yaşında yürümüştür. Ömer derslerinde çok başarılıdır. Ayşe önce başını, sonra gövdesini kontrol etmiştir. Hangi gelişim ilkesi dışta kalır?",
+                options: ["A) Belli yönelimler vardır", "B) Kalıtım ve çevre etkileşimidir", "C) Bireysel ayrılıklar vardır", "D) Nöbetleşedir", "E) Bütünlük içinde gerçekleşir"],
+                correct: 1
+            },
+            {
+                question: "29- \"Her bir öğretim kademesinde kullanılan materyaller birbirinden farklıdır\" Bu durum gelişimin hangi ilkesinin dikkate alındığını gösterir?",
+                options: ["A) Gelişim bir bütündür", "B) Gelişim nöbetleşedir", "C) Gelişimde belli yönelimler vardır", "D) Bireysel farklılıklar vardır", "E) Gelişim hiyerarşik bir sıra (aşama) izler"],
+                correct: 4
+            },
+            {
+                question: "30- Bireylerin kalıtımsal ve çevresel faktörlerden dolayı farklılıkları söz konusudur. Bu ne ile desteklenir?",
+                options: ["A) Süreklidir", "B) Gelişim bütündür", "C) Olgunlaşma/Öğrenme etkisi", "D) Büyüme sonucudur", "E) Gelişimsel yönelimler bireysel farklılıkları doğurur"],
+                correct: 4
+            },
+            {
+                question: "31- 6 yaşındaki okuma yazma bilen Elif'i okula yazdırmak isteyen aileye müdürün ret cevabı vermesi hangisiyle açıklanamaz?",
+                options: ["A) Fiziksel ve duygusal olgunluğa ulaşmamış olması", "B) Zihinsel olgunluk yaşı ile duygusal olgunluk yaşının paralel olmaması", "C) Zihinsel olgunluğa ulaşmamış olması", "D) Fizyolojik olgunluğu ile zihinsel hazır oluşun paralel olmaması", "E) Zihinsel olgunluğunun, duygusal olgunluk için yeterli olmayışı"],
+                correct: 2
+            },
+            {
+                question: "32- Kohlberg'e göre bireylerin belli zihinsel olgunluğa ulaşmalarına paralel olarak ahlaki kavramları öğrenmesi, Piaget ile ortak olarak hangi ilkedir?",
+                options: ["A) Gelişim öğrenme sonucudur", "B) Kalıtım çevre ürünüdür", "C) Bireysel farklılıklar bulunur", "D) Gelişim alanları birbirleri ile etkileşim içindedir", "E) Kritik dönemler vardır"],
+                correct: 3
+            },
+            {
+                question: "33- Karne dönemlerinde velilerin, çocuklarının karnelerini yaşıtlarıyla karşılaştırmamaları gerektiği halde bunu sürdürmeleri hangisini göz ardı ettiklerini gösterir?",
+                options: ["A) Bireysel farklılıkları dikkate almıyorlar", "B) Olgunlaşma ve öğrenme sonucunu bilmiyorlar", "C) Kalıtımsal dinamikleri", "D) Kritik dönemlerin varlığını", "E) Sadece zihinsel olgunlaşmayı"],
+                correct: 0
+            },
+            {
+                question: "34- 10. aydan önce bebeklerin yürümesi beklenmemelidir. Ama bazı anne babalar 8 aylık yürüdüklerini belirtirler. Bu durum hangi kavramlarla açıklanır?",
+                options: ["A) Sadece Olgunlaşma", "B) Olgunlaşma, Hazır bulunuşluk ve Bireysel Farklılık", "C) Sadece Kritik Dönem", "D) Deneyim", "E) Sadece Öğrenme"],
+                correct: 1
+            },
+            {
+                question: "35- Aşağıdaki bilgilerden hangisi yanlıştır?",
+                options: ["A) Cinsiyet rolleri son çocukluk döneminde kazanılır", "B) Değerler sistemi oluşturma ergenliktedir", "C) El-göz koordinasyonu ilk çocukluğun sonunda önem kazanır", "D) Vicdan geliştirmek son çocukluğun görevidir", "E) Davranışların sorumluluğunu alma ergenliktedir"],
+                correct: 0
+            },
+            {
+                question: "36- Piaget'nin bilişsel gelişim kuramı ile ilgili hangisi yanlış bir açıklamadır?",
+                options: ["A) Çocuklar, bilgiyi öğrenme sürecinde aktiftir", "B) Yetişkinlerin bilgiyi öğrenme süreci çocuklarınkinden farklıdır", "C) Bilişsel gelişimleri deneyim ve olgunlaşmalarına bağlı gelişir", "D) Zihinsel gelişim problem çözme yeteneğidir", "E) Zihinsel gelişimleri sadece biyolojik gelişimlerine bağlıdır"],
+                correct: 4
+            },
+            {
+                question: "37- Eğitim fakültesindeki formasyon derslerini, lisede bu dersleri gören öğretmen lisesi mezunlarının daha iyi yapması hangisiyle açıklanır?",
+                options: ["A) Hazır bulunuşluk", "B) Kritik dönem", "C) Gelişme", "D) Deneyim", "E) Büyüme"],
+                correct: 0
+            },
+            {
+                question: "38- (Leylek Masalı Sorusu) Çocuğun leyleklerin kayıp çocukları getirip getiremeyeceğini açıklamaya çalışırken 'leyleklerin özelliklerinden' bahsetmesi zihinsel olarak hangi kavramdır?",
+                options: ["A) Uyum", "B) Denge", "C) Şema (Özümleme)", "D) Dengesizlik", "E) Organizasyon"],
+                correct: 2
+            },
+            {
+                question: "39- (Leylek Masalı Sorusu) Çocuğun 'masalların gerçek olmadığına' dair şemayı oluşturabilmesi için anne bilişsel gelişimdeki hangi süreci işletmiştir?",
+                options: ["A) Uyum (Uyumsama)", "B) Denge", "C) Özümleme", "D) Organizasyon", "E) Adaptasyon"],
+                correct: 0
+            },
+            {
+                question: "40- (Leylek Masalı) Çocuğun 'insanlar ve hayvanlar arasındaki ayrımı' fark ediyor olabilmesi ile ilgili hangisi doğrudur?",
+                options: ["A) Merkeziyetsizlik", "B) Sınıflama kavramı gelişmeye başlamıştır", "C) Benmerkezci düşünme vardır", "D) Animistik düşünce vardır", "E) Çoklu sınıflama vardır"],
+                correct: 1
+            },
+            {
+                question: "41- (Leylek Masalı) Bu çocuğun bulunduğu gelişim dönemini (İşlem Öncesi) bitirmesi sonucunda hangisini kazanması beklenemez?",
+                options: ["A) Odaklanmama", "B) Ayniyet", "C) Çoklu sınıflama", "D) Tümevarım", "E) Tersine dönüşüm"],
+                correct: 3
+            },
+            {
+                question: "42- \"İşlem öncesi dönemdeki çocuklar öğrendikleri bilgileri, şarkıları sürekli tekrar ederler.\" Bu davranış nasıl adlandırılır?",
+                options: ["A) Alışkanlık", "B) Döngüsel hareket", "C) Duyarlılık", "D) Devresel tepki (Ekolali)", "E) Ertelenmiş taklit"],
+                correct: 3
+            },
+            {
+                question: "43- Soykan, yaklaşık 2.5 yaşında bir erkek çocuktur. Dil gelişimi açısından hangisini söylemek doğru olur?",
+                options: ["A) 250 kelimeyi aktif kullanır", "B) Telaffuz hataları görülebilir / İki sözcük dönemindedir", "C) Kritik dönemde değildir", "D) Yetişkinler gibi konuşur", "E) Sesleri ayıt edemez"],
+                correct: 1
+            },
+            {
+                question: "44- Burger King'de masasına oturmayıp diğer masalardan yiyecek alan 2-3 yaşındaki çocuk, Piaget'ye göre hangi özelliği göstermektedir?",
+                options: ["A) Kalıp yargılar", "B) Sembolik oyun", "C) Ben merkezlilik (Egosantrizm)", "D) Masalara canlılık atfetme", "E) Yapaycılık"],
+                correct: 2
+            },
+            {
+                question: "45- Burger King'deki masasında durmayan çocuk Psikososyal gelişim (Erikson) kuramına göre hangi dönemin özelliklerini gösterir?",
+                options: ["A) Temel Güvene karşı güvensizlik", "B) Özerkliğe karşı kuşku ve utanç", "C) Girişimciliğe karşı suçluluk", "D) Özerkliğe karşı suçluluk", "E) Girişimciliğe karşı utanç"],
+                correct: 1
+            },
+            {
+                question: "46- Burger King'deki çocuk için hangisini söylemek yanlış olur?",
+                options: ["A) Dilin sembolik kullanımı görülür", "B) Hayal dünyası gelişmiştir", "C) Özelden özele akıl yürütebilir", "D) Sınıflama kavramı gelişmemiştir", "E) Çoklu sınıflama ve korunum yapabilir"],
+                correct: 4
+            },
+            {
+                question: "47- Ali kendisine verilen problemi öğretmenin öğrettiğinden farklı yolla çözmüş, Ahmet ise derste öğrendiği gibi çözmüştür. Hangisi doğrudur?",
+                options: ["A) Ali soyut işlemler, Ahmet somut işlemler", "B) İkisi de soyut işlemler", "C) Ali benmerkezci, Ahmet değil", "D) Ali somut işlemler, Ahmet soyut", "E) İkisi de işlem öncesi"],
+                correct: 0
+            },
+            {
+                question: "48- Kavram gelişimi kuramını dikkate alan bir öğretmen hangisini dikkate almaz?",
+                options: ["A) Farklı çözüm yollarını öğrenmek", "B) Desteğe ihtiyaç duyduklarını bilmek", "C) Birlikte çalışmanın etkili olduğunu kabul etmek", "D) Bireysel ödevlerin, grup ödevlerinden daha fazla potansiyel geliştirdiğini düşünmek", "E) Okul dışı etkileşimleri artırmak"],
+                correct: 3
+            },
+            {
+                question: "49- \"Bireyin yaşam çevresini ve bu çevrede olup bitenleri anlama, analiz etme sürecidir\" Hangi gelişim alanıdır?",
+                options: ["A) Psikomotor gelişim", "B) Kişilik gelişimi", "C) Cinsel gelişim", "D) Bilişsel gelişim", "E) Dilsel gelişim"],
+                correct: 3
+            },
+            {
+                question: "50- \"Zihinsel gelişimde organizasyon ve uyum süreci belirleyicidir.\" Hangisi bu süreçlerle ilgili geniş çaplı bir şema değişimi (uyum) örneği değildir?",
+                options: ["A) Kaşık ve çatal arasındaki farkı anlaması", "B) Bıçak yerine kaşığı kullanması", "C) Bıçak ve çatalı beraber kullanabilmesi", "D) Lokantada bıçak istemesi", "E) Çay kaşığı yerine sadece tatlı kaşığı istemesi (Benzer nesne kullanımı)"],
+                correct: 4
+            },
+            {
+                question: "51- \"Çocuklar bu dönemde duyu organlarının bilincine varır ve bedenini fark edip kullanmayı öğrenir.\" Hangi dönem kastedilmektedir?",
+                options: ["A) İşlem öncesi dönem", "B) Duyusal motor dönem", "C) Somut işlemler dönemi", "D) İmgesel dönem", "E) Sembolik dönem"],
+                correct: 1
+            },
+            {
+                question: "52- İstenmeyen nesnelerle oynandığında anneler nesneyi saklar. Bebekler bunu unuturken büyük çocuklar tutturur. Bu hangi özellikle ilgilidir?",
+                options: ["A) Benmerkezcilik", "B) Taklit", "C) Nesne devamlılığı (sürekliliği)", "D) İnatçılık", "E) Amaçlı davranış"],
+                correct: 2
+            },
+            {
+                question: "53- \"Bu dönem çocuklarının oyunlarında rekabet ve işbirliği görülmez (Paralel oyun).\" Hangi dönemdir?",
+                options: ["A) Somut işlemler", "B) Duyusal motor", "C) Eylemsel", "D) İşlem öncesi dönem", "E) İşlem Sonrası"],
+                correct: 3
+            },
+            {
+                question: "54- Anne: 'Bak bu telefon güzel' Kız: 'Barbie telefon istiyorum üstünde resim var' Anne: 'Ama bunun zili güzel'. Yaşantıda kızın hangi özelliği dikkati çekmektedir?",
+                options: ["A) Benmerkezcilik", "B) Yapaycılık", "C) Sınıflama", "D) Odaklanma (Tek yönlü düşünme)", "E) Tersine dönüşüm"],
+                correct: 3
+            },
+            {
+                question: "55- Barbie telefon isteyen bu kız çocuğu için hangisini söylemek yanlıştır?",
+                options: ["A) Annesinin nedenleri ile onun nedenleri farklıdır", "B) Arkadaşlarında gördüğü için isteyebilir", "C) Karar vermesi o ana bağlıdır", "D) Annesinin de kendisi gibi barbie telefonu beğenmesi gerektiğini düşünür", "E) Sınıflama (çok boyutlu düşünme) gelişmiştir"],
+                correct: 4
+            },
+            {
+                question: "56- \"Çocuklar şekli değişen hamurun ağırlığının değişmeyeceğini anlayabilir.\" Bu özellik (Korunum) hangi dönemin ardından kazanılır?",
+                options: ["A) Somut işlemler", "B) Soyut işlemler", "C) Duyusal-Motor", "D) İşlem öncesi", "E) Kavramsal Dönem"],
+                correct: 0
+            },
+            {
+                question: "57- Psikolojinin amaçlarından (tanımlama, açıklama, tahmin, kontrol) hangisi \"Ergenlik çağında sosyal çevrenin etkisi ile olumsuz, ters kimlik gelişebilir\" ifadesinin karşılığı Olamaz?",
+                options: ["A) Tanımlama", "B) Açıklama", "C) Tahmin", "D) Kontrol (Yönlendirme)", "E) Yordama"],
+                correct: 3
+            },
+            {
+                question: "58- Fizik öğretmeni, Mehmet'in anlattığı konuları anlamakta zorluk çektiğini fark etmiştir. Çünkü bu konular geçen seneki konularla ilişkilidir. Mehmet'in durumu neyle açıklanır?",
+                options: ["A) Zihinsel olarak olgunlaşmamıştır", "B) Fiziksel büyümemiştir", "C) Duyusal olgunluğa sahip değildir", "D) Gelişimde gerilik göstermektedir", "E) Gerekli hazırbulunuşluğa sahip değildir"],
+                correct: 4
+            },
+            {
+                question: "59- Aşağıdaki ifadelerden hangisi gelişim ile ilgili yanlış bir açıklamadır?",
+                options: ["A) Bireyin nesneyi var olan bilgisi ile açıklaması özümlemedir", "B) Korunumu kazanmadıkları için çok olan bilyeye doğru cevap veremezler", "C) Somut işlemlerdekiler yaparak yaşayarak öğrenmelidir", "D) Duyusal-motor dönemdeki bebekler taklit ile öğrenseler de hemen performans olarak göstermeleri mümkün değildir", "E) Ergenler benmerkezci düşünmezler"],
+                correct: 4
+            },
+            {
+                question: "60- Okulda öğretmenin verdiği testteki soruları dershanede öğrendiği yöntemle çözen Ali'nin durumu hangi bilişsel kavramla açıklanır?",
+                options: ["A) Dengesizlik", "B) Denge", "C) Uyumsama", "D) Özümseme (Asimilasyon)", "E) Adaptasyon"],
+                correct: 3
+            },
+            {
+                question: "61- Öğretmenlerin ve akran gruplarının zihinsel gelişim ve kavram gelişiminde önemini vurgulayan (Sosyo-kültürel) kuramcı hangisidir?",
+                options: ["A) Piaget", "B) Bruner", "C) Vygotsky", "D) Freud", "E) John Dewey"],
+                correct: 2
+            },
+            {
+                question: "62- \"Hayatta her zaman diğer insanlarla birlikte yaşamı değiştirebilme şansımız olduğu\" görüşü (Krizleri aşma) kime/hangi kurama aittir?",
+                options: ["A) Bilişsel gelişim", "B) Psikoseksüel kuram", "C) Kavram gelişimi", "D) Psikososyal kuram (Erikson)", "E) Dil gelişimi"],
+                correct: 3
+            },
+            {
+                question: "63- \"Bireyin yaşam çevresini ve bu çevrede olup bitenleri algılama, düşünme, anlama sürecidir\" Tanımlanan özellik nedir?",
+                options: ["A) Psikomotor gelişim", "B) Kişilik gelişimi", "C) Cinsel gelişim", "D) Bilişsel gelişim", "E) Dilsel gelişim"],
+                correct: 3
+            },
+            {
+                question: "64- İki kardeşten 6 yaşındaki Ahmet, 4 yaşındaki Emel'den daha iyi keman çalmaktadır. Bu ne ile açıklanır?",
+                options: ["A) Sadece Deneyim", "B) Sadece Olgunlaşma", "C) Olgunlaşma, Deneyim ve Bireysel Farklılıklar", "D) Sadece Büyüme", "E) Kritik Dönem"],
+                correct: 2
+            },
+            {
+                question: "65- \"Sınavda 50 almak için her şey geçerlidir, kopya bile!\" diyen kişinin davranışı psikanalitik kurama göre neyle açıklanır?",
+                options: ["A) Süperego", "B) İd", "C) Ego", "D) Bilinçaltı", "E) Bilinçdışı"],
+                correct: 1
+            },
+            {
+                question: "66- Kişilik gelişiminin büyük oranda çocukluk döneminde (0-6 yaş) şekillendiğini söyleyen uzman kimdir?",
+                options: ["A) Freud", "B) Erikson", "C) Piaget", "D) Vygotsky", "E) Bruner"],
+                correct: 0
+            },
+            {
+                question: "67- Annenin bakımının önemli olduğu ve çocukta temel güven duygusunu yarattığı dönem hangisidir?",
+                options: ["A) Bebeklik", "B) Çocukluk", "C) Ergenlik", "D) Genç yetişkinlik", "E) Yetişkinlik"],
+                correct: 0
+            },
+            {
+                question: "68- Kişiliğin duygusal, sosyal ve değerler açısından kritik öneme sahip olduğu, akranların rol modellerinin önemli olduğu kimlik karmaşası dönemi hangisidir?",
+                options: ["A) Bebeklik", "B) Çocukluk", "C) Ergenlik", "D) Genç yetişkinlik", "E) Yetişkinlik"],
+                correct: 2
+            },
+            {
+                question: "69- \"Adaletin kestiği parmak acımaz!\" ve \"Toplumda yaşamak için kurallara uyacaksın\" ifadeleri Kohlberg'in hangi evresiyle eşleşir?",
+                options: ["A) Ödül - Ceza", "B) Saf çıkarcılık", "C) İyi çocuk eğilimi", "D) Kanun düzen eğilimi (Toplumsal Yasa)", "E) Evrensel etik"],
+                correct: 3
+            },
+            {
+                question: "70- Bir çocuğun her gördüğü nesneyi (kalem, oyuncak, kum) ağzına götürmesi bilişsel gelişim açısından neyle açıklanır?",
+                options: ["A) Şema oluşturma", "B) Uyum (Akomodasyon)", "C) Özümleme (Asimilasyon)", "D) Uzlaşma", "E) Sınıflama"],
+                correct: 2
+            },
+            {
+                question: "71- Dersleri zayıf olan bir öğrencinin üniversite sınavında İTÜ Elektrik-Elektronik Mühendisliğini kesin kazanacağını söylemesi (ve buna inanması) hangi savunma mekanizmasıdır?",
+                options: ["A) Pollyannacılık", "B) Yadsıma", "C) Bastırma", "D) Yüceltme", "E) Fantezi (Hayal Kurma)"],
+                correct: 4
+            },
+            {
+                question: "72- Ali, kardeşi Mehmet doğduktan sonra arada onun emziğini alarak koltuğun arkasında emmeye başlamıştır. Bu davranış hangi savunma düzeneğidir?",
+                options: ["A) Fantezi", "B) Rasyonalizasyon", "C) Yansıtma", "D) Bastırma", "E) Ödünleme / Gerileme"],
+                correct: 4
+            },
+            {
+                question: "73- Çocukların sağlıklı bir duygusal gelişim göstermeleri için güçlü kişisel bağlanmaya gereksinim duydukları belirtilmektedir. Burada hangi duygu gereklidir?",
+                options: ["A) Acı", "B) Sevgi", "C) Heyecan", "D) Sevinç", "E) Öfke"],
+                correct: 1
+            },
+            {
+                question: "74- Öğretmenin, derste konuşan öğrencisine sinirlenerek tokat atması nasıl bir saldırganlık türüdür?",
+                options: ["A) Fiziksel / Araçsal", "B) Araçsal / Sosyal", "C) Dürtüsel / Fiziksel", "D) Fiziksel / Sosyal", "E) Dürtüsel / Sosyal"],
+                correct: 2
+            },
+            {
+                question: "75- İki senedir öğretmenlik yapan Zehra kendisini boş ve anlamsız hissetmekte, hayal kırıklığı yaşayacağı için insanlarla beraber olmanın ve özel bir ilişki kurmanın gereksiz olduğunu düşünmektedir. Erikson'a göre hangi dönemdedir?",
+                options: ["A) Temel güvene - güvensizlik", "B) Özerkliğe - kuşku", "C) Kimlik - rol karmaşası", "D) Üretkenliğe - durgunluk", "E) Yakınlığa karşı yalıtılmışlık (izolasyon)"],
+                correct: 4
             }
         ];
 
+        // Sistem Ayarları
         quizData.forEach(q => { q.userAnswer = null; });
 
         let currentIndex = 0;
@@ -211,11 +568,13 @@
         function loadQuestion() {
             const q = quizData[currentIndex];
             
+            // Sayaçları ve Barı Güncelle
             document.getElementById("question-counter").innerText = `Soru: ${currentIndex + 1} / ${quizData.length}`;
             document.getElementById("progress-bar").style.width = `${((currentIndex + 1) / quizData.length) * 100}%`;
             document.getElementById("correct-text").innerText = `Doğru: ${correctCount}`;
             document.getElementById("wrong-text").innerText = `Yanlış: ${wrongCount}`;
 
+            // Metni ve Şıkları Ekrana Bas
             qText.innerText = q.question;
             optContainer.innerHTML = "";
 
@@ -237,6 +596,7 @@
                 optContainer.appendChild(btn);
             });
 
+            // Butonların durumları
             btnPrev.disabled = currentIndex === 0; 
             
             if (q.userAnswer !== null) {
@@ -248,6 +608,9 @@
                 btnNext.disabled = true; 
                 btnNext.innerText = "İleri ➔";
             }
+            
+            // Ekranı hep yukarı kaydır (uzun sorularda kullanıcı aşağıda kalmasın)
+            document.getElementById("quiz-area").scrollTop = 0;
         }
 
         function selectOption(index) {
@@ -269,7 +632,7 @@
             const q = quizData[currentIndex];
             if (q.userAnswer !== null) return;
             
-            q.userAnswer = -1; 
+            q.userAnswer = -1; // Pas geçti kodu
             wrongCount++; 
             loadQuestion();
         }
@@ -294,7 +657,8 @@
             document.getElementById("header-area").style.display = "none";
             document.getElementById("quiz-area").style.display = "none";
             document.getElementById("footer-area").style.display = "none";
-            document.getElementById("result-screen").style.display = "block";
+            
+            document.getElementById("result-screen").style.display = "flex";
             document.getElementById("score-result").innerText = `${correctCount}/${quizData.length}`;
         }
 
