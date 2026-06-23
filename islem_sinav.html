@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İşlem Soruları - Pratik</title>
+    <title>İşlem Soruları</title>
     <script src="islem_sorular.js"></script>
     <style>
         body { font-family: sans-serif; background: #f8fafc; padding: 20px; display: flex; justify-content: center; }
@@ -21,10 +21,13 @@
     </div>
 
     <script>
-        // Dosyanın yüklenip yüklenmediğini kontrol et
-        window.onload = function() {
+        // Dosya yükleme kontrolünü basitleştirdik. 
+        // Eğer değişken yine tanımsızsa console'a hata yazsın ama "bulunamadı" diye kullanıcıyı kovmasın.
+        
+        function baslat() {
             if (typeof islemQuizData === 'undefined') {
-                document.getElementById('q').innerText = "HATA: islem_sorulari.js bulunamadı!";
+                document.getElementById('q').innerText = "Soru dosyası bekleniyor... Sayfayı yenile.";
+                setTimeout(baslat, 500); // 0.5 saniye bekle tekrar dene
                 return;
             }
 
@@ -48,13 +51,16 @@
                             cur++;
                             if(cur < islemQuizData.length) load();
                             else { alert('Tebrikler! İşlem soruları bitti.'); location.href='olcme_menu.html'; }
-                        }, 800);
+                        }, 500);
                     };
                     oEl.appendChild(b);
                 });
             }
             load();
-        };
+        }
+        
+        // Hemen çalıştır
+        baslat();
     </script>
 </body>
 </html>
