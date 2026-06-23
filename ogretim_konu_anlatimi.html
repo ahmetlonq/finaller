@@ -3,115 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Konu Anlatımı - Öğretim Teknolojileri</title>
+    <title>Öğretim Teknolojileri - Premium Konu Anlatımı</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; background-color: #f8fafc; color: #334155; display: flex; flex-direction: column; height: 100vh; }
-        .top-nav { background: white; padding: 15px 20px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 15px; position: sticky; top: 0; z-index: 10; }
-        .back-btn { text-decoration: none; color: #475569; font-weight: 600; font-size: 14px; background: #f1f5f9; padding: 8px 12px; border-radius: 8px; transition: 0.2s; }
-        .back-btn:hover { background: #e2e8f0; }
-        .page-title { margin: 0; font-size: 16px; font-weight: 700; color: #0f172a; }
-        .content { padding: 20px; overflow-y: auto; flex-grow: 1; max-width: 800px; margin: 0 auto; width: 100%; }
-        .topic-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: 1px solid #e2e8f0; }
-        .topic-card h2 { margin: 0 0 15px 0; font-size: 18px; color: #1e40af; border-bottom: 2px solid #eff6ff; padding-bottom: 10px; }
-        .topic-card h3 { margin: 15px 0 5px 0; font-size: 15px; color: #0f172a; }
-        .topic-card p { margin: 0 0 10px 0; font-size: 14px; line-height: 1.6; color: #475569; }
-        .topic-card ul { margin: 0 0 15px 0; padding-left: 20px; font-size: 14px; color: #475569; line-height: 1.6; }
-        .topic-card li { margin-bottom: 6px; }
-        .highlight { background: #fef08a; padding: 0 4px; border-radius: 4px; color: #854d0e; font-weight: 600; }
+        
+        body { 
+            margin: 0; 
+            background-color: #f8fafc;
+            color: #334155; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+        }
+
+        /* Sabit Üst Menü */
+        .top-nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .back-btn {
+            text-decoration: none;
+            color: #475569;
+            font-weight: 600;
+            font-size: 14px;
+            background: #f1f5f9;
+            padding: 8px 14px;
+            border-radius: 10px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .back-btn:hover { background: #e2e8f0; color: #0f172a; }
+        
+        .hero {
+            padding: 40px 20px 20px 20px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero h1 { margin: 0 0 10px 0; font-size: 26px; color: #0f172a; letter-spacing: -0.5px; }
+        .hero p { margin: 0; font-size: 15px; color: #64748b; line-height: 1.6; }
+
+        /* İçerik Alanı ve Akordeon */
+        .content {
+            padding: 0 20px 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .accordion-item {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header {
+            width: 100%;
+            text-align: left;
+            padding: 20px;
+            background: none;
+            border: none;
+            font-size: 17px;
+            font-weight: 700;
+            color: #1e293b;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .accordion-header:hover { background: #f8fafc; }
+        
+        .icon-indicator {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+            color: #10b981; /* BÖTE rengi yeşile uyumlu */
+        }
+        .accordion-item.active .icon-indicator { transform: rotate(180deg); }
+        .accordion-item.active { border-color: #a7f3d0; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.1); }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            background: #ffffff;
+        }
+        
+        .content-inner { padding: 0 20px 20px 20px; }
+        .content-inner h3 { color: #059669; font-size: 16px; margin: 20px 0 10px 0; border-bottom: 2px solid #ecfdf5; padding-bottom: 8px; }
+        .content-inner h3:first-child { margin-top: 0; }
+        .content-inner p { font-size: 14.5px; line-height: 1.7; color: #475569; margin: 0 0 12px 0; }
+        .content-inner ul { margin: 0 0 15px 0; padding-left: 20px; font-size: 14.5px; color: #475569; line-height: 1.7; }
+        .content-inner li { margin-bottom: 8px; }
+        .content-inner strong { color: #1e293b; }
+
+        /* Taktik ve Uyarı Kutuları */
+        .tip-box {
+            background: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 15px;
+            border-radius: 0 12px 12px 0;
+            margin: 15px 0;
+        }
+        .tip-box-title { color: #166534; font-weight: 700; font-size: 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        
+        .alert-box {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            border-radius: 0 12px 12px 0;
+            margin: 15px 0;
+        }
+        .alert-box-title { color: #b91c1c; font-weight: 700; font-size: 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+
     </style>
 </head>
 <body>
 
     <div class="top-nav">
-        <a href="index.html" class="back-btn">◂ Ana Menüye Dön</a>
-        <h1 class="page-title">💻 Öğretim Teknolojileri</h1>
+        <a href="ogretim_menu.html" class="back-btn">◂ Menüye Dön</a>
+    </div>
+
+    <div class="hero">
+        <h1>💻 Öğretim Teknolojileri</h1>
+        <p>26 Temmuz AGS oturumunda netlerini artıracak öğretim modelleri, tasarım ilkeleri ve yaşantı konisi detayları.</p>
     </div>
 
     <div class="content">
 
-        <div class="topic-card">
-            <h2>1. Öğrenme ve Öğretme Kuramları</h2>
-            <ul>
-                <li><strong>Davranışçı Bakış:</strong> Öğrenme, bir davranışın gösterilme olasılığındaki değişimdir. Öğrenci edilgendir (pasiftir), öğretmen dış etkenleri düzenler.</li>
-                <li><strong>Bilişsel Bakış:</strong> Öğrenme, bellekte depolanan bilgide meydana gelen değişimdir (Dikkat, kodlama, geri çağırma). Öğrenci bilgiyi işleyen kişidir.</li>
-                <li><strong>Yapılandırmacı Bakış:</strong> Öğrenme, yaşantılar sonucu anlamda meydana gelen değişimdir. Öğrenci bilgiyi kendisi yapılandırır, öğrenmeden sorumludur. Öğretmen rehberdir.</li>
-            </ul>
+        <div class="accordion-item">
+            <button class="accordion-header">
+                1. Öğrenme Kuramları ve İletişim Süreci
+                <span class="icon-indicator">▼</span>
+            </button>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <h3>Öğrenme Kuramları</h3>
+                    <ul>
+                        <li><strong>Davranışçı Bakış:</strong> Öğrenci "pasif" bir alıcıdır. Öğrenme uyarıcı-tepki bağıyla gerçekleşir. Teknoloji sadece alıştırma-tekrar için kullanılır.</li>
+                        <li><strong>Bilişsel Bakış:</strong> Bilginin bellekte nasıl işlendiğine (dikkat, kodlama, geri çağırma) odaklanır. Öğrenci bilgiyi işleyen kişidir.</li>
+                        <li><strong>Yapılandırmacı Bakış:</strong> Öğrenci tamamen <strong>aktiftir</strong>. Bilgiyi ezberlemez, bizzat araştırıp kendi zihninde inşa eder. Öğretmen sadece rehberdir.</li>
+                    </ul>
+
+                    <h3>İletişim Sürecinin Ögeleri</h3>
+                    <p>İletişim, bilgiyi ortak kılma sürecidir. <strong>Kaynak</strong> (öğretmen) mesajı kodlar. <strong>Kanal</strong> (araç/materyal) üzerinden iletir. <strong>Alıcı</strong> (öğrenci) mesajın kodunu kendi yaşantısına göre çözer. <strong>Geri Bildirim (Dönüt)</strong> ise mesajın anlaşıldığını onaylar.</p>
+
+                    <div class="alert-box">
+                        <div class="alert-box-title">⚠️ Kavram Yanılgısı</div>
+                        İletişim sürecinde bir mesajın alıcı tarafından yanlış yorumlanmasının en büyük sebebi "Kanal" değil, alıcının geçmiş deneyimlerini barındıran <strong>"Yaşantı Alanı"nın</strong> kaynakla örtüşmemesidir.
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="topic-card">
-            <h2>2. İletişim Süreci</h2>
-            <p>İletişim anlamları ortak kılma sürecidir. Öğeleri şunlardır:</p>
-            <ul>
-                <li><strong>Kaynak ve Kodlama:</strong> İletişimi başlatan kişidir (Öğretmen). Bilgiler sembollerle kodlanır.</li>
-                <li><strong>Mesaj:</strong> Kodlanan bilginin aldığı fiziki şekildir.</li>
-                <li><strong>Kanal (Araç-Gereç):</strong> Mesajın alıcıya iletilmesini sağlayan yöntem ve materyallerdir.</li>
-                <li><strong>Alıcı ve Kod Çözme:</strong> Mesajı alan, anlamlandıran ve tepkide bulunan kişidir (Öğrenci). Anlamlandırma, alıcının "yaşantı alanına" göre değişir.</li>
-                <li><strong>Geri Bildirim:</strong> Mesajın doğru anlaşılıp anlaşılmadığını gösteren tepkidir.</li>
-            </ul>
+        <div class="accordion-item">
+            <button class="accordion-header">
+                2. Edgar Dale'in Yaşantı Konisi
+                <span class="icon-indicator">▼</span>
+            </button>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <p>Dale'e göre öğrenmeye ne kadar çok duyu organı katılırsa, öğrenme o kadar kalıcı olur. [attachment_0](attachment)</p>
+                    
+                    <h3>Koninin Temel Mantığı</h3>
+                    <ul>
+                        <li><strong>Tabandan Tepeye:</strong> Öğrenme, basitten karmaşığa ve <strong>somuttan soyuta</strong> doğru ilerler.</li>
+                        <li><strong>Koninin Tabanı (En kalıcı):</strong> Bütün duyu organlarıyla, <span style="background:#fef08a; padding:2px; font-weight:600;">kendi kendine edinilen</span>, yaparak yaşayarak öğrenmelerdir. <em>(Deney yapmak, model/numune hazırlamak.)</em></li>
+                        <li><strong>Koninin Tepesi (En zayıf):</strong> Sadece işiterek veya görerek, <span style="background:#fef08a; padding:2px; font-weight:600;">başkalarının yardımıyla</span> edinilen soyut yaşantılardır. <em>(Okumak, radyo dinlemek, semboller.)</em></li>
+                    </ul>
+
+                    <div class="tip-box">
+                        <div class="tip-box-title">💡 AGS Taktik</div>
+                        Sınavda sorulursa: Bir insanın öğrendiklerinin <strong>%83'ü GÖRME</strong>, %11'i işitme duyusuyla gerçekleşir. Ancak en iyi hatırlama (kalıcılık), kişinin o işi bizzat <strong>YAPTIĞI (%90)</strong> durumlarda gerçekleşir.
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="topic-card">
-            <h2>3. Edgar Dale'in Yaşantı Konisi</h2>
-            <p>Öğrenme işlemine ne kadar çok duyu organı katılırsa, öğrenme o kadar iyi olur ve geç unutulur. En iyi öğrenme kendi kendimize yaparak öğrendiğimizdir.</p>
-            <ul>
-                <li><strong>Koninin Tabanı:</strong> Bütün duyu organlarıyla, <span class="highlight">kendi kendine edinilen</span>, somut ve basit yaşantılardır (Doğrudan doğruya edinilen maksatlı yaşantılar, model ve numuneler).</li>
-                <li><strong>Koninin Tepesi:</strong> Az sayıda duyuyla, <span class="highlight">başkalarının yardımıyla</span> edinilen, soyut ve karmaşık yaşantılardır (Sözel semboller, görsel semboller).</li>
-            </ul>
+        <div class="accordion-item">
+            <button class="accordion-header">
+                3. Öğretim Tasarımı Modelleri
+                <span class="icon-indicator">▼</span>
+            </button>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <p>Eğitim yazılımları, modülleri veya sınıf içi dersleri planlamak için kullanılan haritalardır. [attachment_1](attachment)</p>
+
+                    <h3>ADDIE Modeli (Sistematik Sistem Tasarımı)</h3>
+                    <ul>
+                        <li><strong>A - Analiz (Analyze):</strong> Problem nedir? Hedef kitle (öğrenciler) kimdir? Mevcut imkanlar nelerdir?</li>
+                        <li><strong>D - Tasarım (Design):</strong> Hedefler belirlenir, öğretim stratejisi (yöntemler, testler) kâğıt üzerinde tasarlanır.</li>
+                        <li><strong>D - Geliştirme (Develop):</strong> Tasarlanan kâğıt üzerindeki plan, gerçek materyallere, yazılımlara dönüştürülür.</li>
+                        <li><strong>I - Uygulama (Implement):</strong> Hazırlanan materyal veya yazılım sınıf ortamında (pilot veya gerçek) öğrencilere uygulanır.</li>
+                        <li><strong>E - Değerlendirme (Evaluate):</strong> Sistem işe yaradı mı? Hedeflere ulaşıldı mı? (Geri bildirimle döngü başa sarar).</li>
+                    </ul>
+
+                    <h3>ASSURE Modeli</h3>
+                    <p>Özellikle günlük ders veren öğretmenlerin <strong>sınıf içi materyal kullanımı</strong> için kılavuzdur.</p>
+                    <ul style="list-style-type: square;">
+                        <li><strong>A</strong>nalyze Learners (Öğrencilerin Analizi)</li>
+                        <li><strong>S</strong>tate Objectives (Hedeflerin Belirlenmesi)</li>
+                        <li><strong>S</strong>elect Media (Yöntem, Medya ve Materyal Seçimi)</li>
+                        <li><strong>U</strong>tilize Media (Materyallerin Kullanımı)</li>
+                        <li><strong>R</strong>equire Participation (Öğrenci Katılımının Sağlanması)</li>
+                        <li><strong>E</strong>valuate (Değerlendirme)</li>
+                    </ul>
+
+                    <h3>ARCS Motivasyon Modeli</h3>
+                    <p>Eğitimde motivasyonu korumak için 4 adımlı model: <strong>A</strong>ttention (Dikkat), <strong>R</strong>elevance (Konunun öğrenciye/hayata uygunluğu), <strong>C</strong>onfidence (Güven aşılamak), <strong>S</strong>atisfaction (Doyum / Ödül).</p>
+                </div>
+            </div>
         </div>
 
-        <div class="topic-card">
-            <h2>4. Öğretim Tasarımı Modelleri</h2>
-            <h3>ADDIE Modeli (Sistematik Tasarım)</h3>
-            <ul>
-                <li><strong>Analiz (Analyze):</strong> Problem nedir? Hedef kitle kimdir? İhtiyaç analizi yapılır.</li>
-                <li><strong>Tasarım (Design):</strong> Hedefler nelerdir? Hangi strateji ve yöntemler kullanılacak?</li>
-                <li><strong>Geliştirme (Development):</strong> Taslak materyallerin üretilmesi ve görünümünün ayarlanmasıdır.</li>
-                <li><strong>Uygulama (Implementation):</strong> Hazırlanan programın pilot çalışmasının yapıldığı ve öğrencilere sunulduğu aşamadır.</li>
-                <li><strong>Değerlendirme (Evaluation):</strong> Öğrenciler öğrendi mi? Materyal amaca ulaştı mı? Sürekli geribildirimle sistem güncellenir.</li>
-            </ul>
-            
-            <h3>ASSURE Modeli (Sınıf İçi Planlama)</h3>
-            <p>Günlük ders veren öğretmenlerin materyal seçimi ve kullanımı için bir kılavuzdur.</p>
-            <ul>
-                <li><strong>A - Öğrenci Analizi:</strong> Yaş, giriş yetenekleri, öğrenme stilleri saptanır.</li>
-                <li><strong>S - Hedeflerin Belirlenmesi:</strong> Ulaşılacak hedefler belirlenir (Bilişsel, duyuşsal).</li>
-                <li><strong>S - Yöntem ve Materyal Seçimi:</strong> En uygun ortam ve araçlar seçilir.</li>
-                <li><strong>U - Materyallerin Kullanımı:</strong> Ortam ve öğrenci hazırlanır, ders işlenir.</li>
-                <li><strong>R - Öğrenci Katılımı:</strong> Etkileşim ve pratik yapma imkanı sağlanır.</li>
-                <li><strong>E - Değerlendirme:</strong> Öğrenci ve materyal değerlendirilir.</li>
-            </ul>
+        <div class="accordion-item">
+            <button class="accordion-header">
+                4. Görsel Tasarım İlkeleri
+                <span class="icon-indicator">▼</span>
+            </button>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <h3>Görsel Türleri</h3>
+                    <ul>
+                        <li><strong>Gerçekçi Görseller:</strong> Nesneyi kendi orijinal özellikleriyle (fotoğrafı) gösterir.</li>
+                        <li><strong>Benzeşik (Analojik) Görseller:</strong> Bilinmeyen bir kavramı, bilinen bir kavrama benzeterek anlatır. <em>(Örn: Kan dolaşımını su tesisatına benzetmek.)</em></li>
+                        <li><strong>Şematik (Organizasyonel) Görseller:</strong> Hiyerarşiyi ve iş akışını çizgilerle, kutularla gösterir. <em>(Örn: Kavram haritaları, algoritmalar.)</em></li>
+                    </ul>
 
-            <h3>ARCS Motivasyon Modeli</h3>
-            <ul>
-                <li><strong>Attention (Dikkat):</strong> Öğrenenin ilgisini çekmek.</li>
-                <li><strong>Relevance (Uygunluk):</strong> İçeriğin öğrencinin ihtiyacı ve yaşantısıyla ilişkilendirilmesi.</li>
-                <li><strong>Confidence (Güven):</strong> Öğrencinin başarabileceğine inanması.</li>
-                <li><strong>Satisfaction (Doyum):</strong> Başarı sonrası içsel ve dışsal ödüllerle tatmin sağlanması.</li>
-            </ul>
+                    <h3>Tasarımsal Yerleşim Kuralları</h3>
+                    <ul>
+                        <li><strong>Yakınlık:</strong> Birbiriyle ilgili ögeler yan yana, ilgisizler uzak konur.</li>
+                        <li><strong>Denge:</strong> Ekrandaki ağırlık eşit dağıtılmalıdır.</li>
+                        <li><strong>Vurgu (Yönlendirme):</strong> En önemli nokta renk, kalınlık veya oklarla belirtilmelidir.</li>
+                    </ul>
+
+                    <div class="alert-box">
+                        <div class="alert-box-title">⚠️ Kavram Yanılgısı</div>
+                        Bir materyal tasarlanırken sayfanın "en değerli" ve dikkati en çok çeken kısmı orta bölge değildir; okuma alışkanlıklarımızdan dolayı <strong>Sol Üst Köşe</strong>'dir. Ana mesaj veya başlık buraya yerleştirilir.
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="topic-card">
-            <h2>5. Görsel Tasarımın Unsurları ve İlkeleri</h2>
-            <ul>
-                <li><strong>Gerçekçi (Realistic) Görseller:</strong> Nesneyi kendi renkleriyle, gerçeğe en yakın şekilde gösterir (Örn: Bir arabanın gerçek fotoğrafı).</li>
-                <li><strong>Benzeşik (Analogic) Görseller:</strong> Bir kavramı, ona benzeyen başka bir kavramla (analoji) açıklayarak eski bilgilerin yeni bilgileri yorumlamasında kullanılır.</li>
-                <li><strong>Şematik (Organizational) Görseller:</strong> Kavramlar arası ilişkileri gösterir (Akış şemaları, grafikler, haritalar).</li>
-            </ul>
-            <h3>Yerleşim İlkeleri</h3>
-            <p><strong>Yakınlık:</strong> İlgili ögeler yakın, ilgisizler uzak konur. <br><strong>Denge ve Vurgu:</strong> Oransızlıktan kaçınılır. En önemli/dikkat çekici öge materyalin <strong>sol üst</strong> köşesine ya da merkeze yerleştirilmelidir. Yönlendiriciler (ok, renk, kalınlaştırma) kullanılmalıdır.</p>
-        </div>
+        <div class="accordion-item">
+            <button class="accordion-header">
+                5. Bloom Taksonomisi ve Haritalar
+                <span class="icon-indicator">▼</span>
+            </button>
+            <div class="accordion-content">
+                <div class="content-inner">
+                    <p>Eğitim hedefleri üç ana alanda toplanır: [attachment_2](attachment)</p>
+                    
+                    <ul>
+                        <li><strong>Bilişsel Alan (Zihin):</strong> Bilgi, Kavrama, Uygulama, Analiz, Sentez, Değerlendirme. <em>(Yenilenmiş halinde en üst basamak "Yaratma"dır.)</em></li>
+                        <li><strong>Duyuşsal Alan (Duygu/Tutum):</strong> Alma, Tepki Verme, Değer Verme, Örgütleme, Kişilik Haline Getirme. <em>(Örn: Siber güvenliği önemseme.)</em></li>
+                        <li><strong>Psikomotor Alan (Kas/Beceri):</strong> Algılama, Kurulma, Kılavuzla Yapma, Mekanikleşme. <em>(Örn: Bilgisayarı kurup çalıştırma.)</em></li>
+                    </ul>
 
-        <div class="topic-card">
-            <h2>6. Bloom Taksonomisi</h2>
-            <ul>
-                <li><strong>Bilişsel Alan:</strong> Bilgi, Kavrama, Uygulama, Analiz, Sentez, Değerlendirme. (Yenilenmiş halinde en üst basamak "Yaratma"dır).</li>
-                <li><strong>Duyuşsal Alan:</strong> Alma, Tepkide Bulunma, Değer Verme, Örgütleme, Kişilik Haline Getirme.</li>
-                <li><strong>Psikomotor Alan:</strong> Algılama, Kurulma, Kılavuzla Yapma, Mekanikleşme, Beceri Haline Getirme, Yaratma.</li>
-            </ul>
+                    <h3>Kavram Haritaları</h3>
+                    <p>Genelden özele doğru yapılandırılan, kavramlar arası ilişkilerin mutlaka <strong>oklar üzerindeki ilişki ifadeleriyle</strong> okunduğu şemalardır. Anlamlı öğrenmeyi artırır ve <strong>kavram yanılgılarını tespit etmede</strong> kullanılır. [attachment_3](attachment)</p>
+                </div>
+            </div>
         </div>
 
     </div>
+
+    <script>
+        // Akordeon Menü Çalışma Mantığı
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                const content = item.querySelector('.accordion-content');
+                const isActive = item.classList.contains('active');
+
+                // Diğer tüm açık akordeonları kapat
+                document.querySelectorAll('.accordion-item').forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                    otherItem.querySelector('.accordion-content').style.maxHeight = null;
+                });
+
+                // Tıklanan kapalıysa aç
+                if (!isActive) {
+                    item.classList.add('active');
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>
