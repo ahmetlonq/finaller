@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>İşlem Soruları - Pratik</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script src="resources/islem_sorulari.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #f8fafc; padding: 20px; display: flex; justify-content: center; }
+        .card { background: white; width: 100%; max-width: 500px; padding: 20px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn { display: block; width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; }
+        .btn:hover { background: #f1f5f9; }
+        .correct { background: #dcfce7 !important; border-color: #22c55e !important; }
+        .wrong { background: #fee2e2 !important; border-color: #ef4444 !important; }
+    </style>
+</head>
+<body>
+    <div class="card" id="quiz">
+        <h2 id="q">Soru yükleniyor...</h2>
+        <div id="opts"></div>
+        <p id="res"></p>
+        <button class="btn" onclick="location.href='olcme_menu.html'">◂ Menüye Dön</button>
+    </div>
+
+    <script>
+        let cur = 0;
+        const qEl = document.getElementById('q');
+        const oEl = document.getElementById('opts');
+
+        function load() {
+            const q = islemQuizData[cur];
+            qEl.innerText = q.question;
+            oEl.innerHTML = '';
+            q.options.forEach((o, i) => {
+                const b = document.createElement('button');
+                b.className = 'btn';
+                b.innerText = o;
+                b.onclick = () => {
+                    if(i === q.correct) { b.classList.add('correct'); alert('Doğru!'); }
+                    else { b.classList.add('wrong'); alert('Yanlış! Çözüm: ' + q.options[q.correct]); }
+                    cur++;
+                    if(cur < islemQuizData.length) load();
+                    else alert('Test bitti!');
+                };
+                oEl.appendChild(b);
+            });
+        }
+        load();
+    </script>
+</body>
+</html>
