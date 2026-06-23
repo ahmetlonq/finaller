@@ -33,18 +33,16 @@
             margin-bottom: 20px;
             border: 2px solid transparent;
             transition: 0.3s;
-            text-decoration: none; /* Link çizgilerini kaldırır */
-            display: block; /* Tıklanabilir alanı tüm karta yayar */
+            text-decoration: none;
+            display: block;
             color: inherit;
         }
         
         .course-card.active:hover { border-color: #3b82f6; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15); }
-        .course-card.disabled { opacity: 0.6; filter: grayscale(100%); cursor: not-allowed; }
 
         .course-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .course-title { font-size: 18px; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 8px; }
         .badge { background: #3b82f6; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-        .badge.soon { background: #94a3b8; }
 
         .enter-btn {
             background: #eff6ff;
@@ -75,14 +73,14 @@
         <div class="enter-btn">Modüle Gir ➔</div>
     </a>
 
-    <div class="course-card disabled">
+    <a href="ogretim_menu.html" class="course-card active">
         <div class="course-header">
             <div class="course-title">💻 Öğretim Teknolojileri</div>
-            <div class="badge soon">Yakında</div>
+            <div class="badge" style="background:#10b981;">Aktif</div>
         </div>
-        <p style="margin:0; font-size:14px; color:#64748b; line-height:1.5;">Uzaktan eğitim, materyal tasarım ilkeleri ve güncel eğitim yazılımları.</p>
-        <div class="enter-btn" style="background: #f1f5f9; color: #94a3b8;">Hazırlanıyor...</div>
-    </div>
+        <p style="margin:0; font-size:14px; color:#64748b; line-height:1.5;">Uzaktan eğitim, materyal tasarım ilkeleri, modeller ve güncel eğitim yazılımları.</p>
+        <div class="enter-btn" style="color:#059669; background:#d1fae5;">Modüle Gir ➔</div>
+    </a>
 
 </body>
 </html>
