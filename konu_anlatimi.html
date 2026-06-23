@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Konu Anlatımı - Ölçme ve Değerlendirme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            margin: 0; 
+            background-color: #f8fafc;
+            color: #334155; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh;
+        }
+
+        /* Üst Menü (Sabit) */
+        .top-nav {
+            background: white;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .back-btn {
+            text-decoration: none;
+            color: #475569;
+            font-weight: 600;
+            font-size: 14px;
+            background: #f1f5f9;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+        .back-btn:hover { background: #e2e8f0; }
+        .page-title { margin: 0; font-size: 16px; font-weight: 700; color: #0f172a; }
+
+        /* İçerik Alanı */
+        .content {
+            padding: 20px;
+            overflow-y: auto;
+            flex-grow: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid #e2e8f0;
+        }
+
+        .topic-card h2 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            color: #1e40af;
+            border-bottom: 2px solid #eff6ff;
+            padding-bottom: 10px;
+        }
+
+        .topic-card h3 { margin: 15px 0 5px 0; font-size: 15px; color: #0f172a; }
+        .topic-card p { margin: 0 0 10px 0; font-size: 14px; line-height: 1.6; color: #475569; }
+        .topic-card ul { margin: 0 0 15px 0; padding-left: 20px; font-size: 14px; color: #475569; line-height: 1.6; }
+        .topic-card li { margin-bottom: 6px; }
+        
+        .highlight { background: #fef08a; padding: 0 4px; border-radius: 4px; color: #854d0e; font-weight: 600; }
+        .formula-box { background: #f8fafc; border: 1px dashed #cbd5e1; padding: 10px; border-radius: 8px; font-family: monospace; font-size: 13px; color: #334155; text-align: center; margin: 10px 0; }
+
+    </style>
+</head>
+<body>
+
+    <div class="top-nav">
+        <!-- LİNK OLCME MENU SAYFASINA GÜNCELLENDİ -->
+        <a href="olcme_menu.html" class="back-btn">◂ Menüye Dön</a>
+        <h1 class="page-title">📖 Ölçme ve Değerlendirme</h1>
+    </div>
+
+    <div class="content">
+
+        <!-- BÖLÜM 1 -->
+        <div class="topic-card">
+            <h2>1. Temel Kavramlar</h2>
+            
+            <h3>Ölçme Türleri</h3>
+            <ul>
+                <li><strong>Doğrudan Ölçme:</strong> Özelliğin kendisiyle aynı nitelikteki bir araçla gözlemlenmesidir (Boy ölçmek, öğrenci saymak).</li>
+                <li><strong>Dolaylı Ölçme:</strong> Doğrudan gözlenemeyen özelliklerin (zeka, başarı, tutum) testler vasıtasıyla ölçülmesidir. Eğitim testlerinin tümü dolaylıdır.</li>
+                <li><strong>Türetilmiş Ölçme:</strong> İki veya daha fazla değişkenin matematiksel formülle işleme girmesidir (Hız = Yol/Zaman).</li>
+            </ul>
+
+            <h3>Ölçüt Türleri</h3>
+            <ul>
+                <li><strong>Mutlak Ölçüt:</strong> Sınavdan önce bellidir, grubun başarısına göre değişmez ("Geçme notu 60'tır", "En az 5 yıl tecrübe").</li>
+                <li><strong>Bağıl Ölçüt:</strong> Sınava giren gruba göre sınavdan sonra şekillenir ("Sınıf ortalamasını geçmek", "İlk 100'e girmek", "Çan eğrisi").</li>
+            </ul>
+
+            <h3>Değerlendirme Amacına Göre Türler</h3>
+            <ul>
+                <li><strong>Tanıma ve Yerleştirme:</strong> Sürecin <span class="highlight">başında</span> önkoşul eksiklerini saptayıp muafiyet veya kurlara ayırmak için yapılır (Seviye tespit sınavları).</li>
+                <li><strong>Biçimlendirme (Formatif):</strong> Süreç <span class="highlight">içinde</span> öğrenme eksiklerini gidermek içindir, not amacı gütmez (Ünite sonu testleri).</li>
+                <li><strong>Değer Biçme (Summatif):</strong> Sürecin <span class="highlight">sonunda</span> öğrencinin başarı düzeyini tespit edip geçme-kalma kararı vermek (Vize, Final, AGS, KPSS).</li>
+            </ul>
+        </div>
+
+        <!-- BÖLÜM 2 -->
+        <div class="topic-card">
+            <h2>2. Ölçme Araçlarının Nitelikleri</h2>
+
+            <h3>Hata Türleri</h3>
+            <ul>
+                <li><strong>Sabit Hata:</strong> Her öğrenciye ve her ölçüme istisnasız <span class="highlight">eşit miktarda</span> karışır (Herkese +5 puan vermek). Geçerliği düşürür.</li>
+                <li><strong>Sistematik Hata:</strong> Kurala, gruba veya yanlılığa göre <span class="highlight">miktarı değişen</span> hatadır (Sadece yazısı güzele +10 puan vermek). Geçerliği düşürür.</li>
+                <li><strong>Tesadüfi Hata:</strong> Kaynağı, yönü ve miktarı bilinmeyen, rastgele karışan hatadır. Şans başarısı, yorgunluk vb. <span class="highlight">Güvenirliği düşüren tek hata budur.</span></li>
+            </ul>
+
+            <h3>Güvenirlik (Tesadüfi Hatadan Arınıklık)</h3>
+            <p>Bir testin tutarlı, kararlı ve objektif olma durumudur.</p>
+            <ul>
+                <li><strong>Test-Tekrar Test:</strong> Aynı testin aynı gruba aralıklarla (örn: 3 hafta) iki kez uygulanmasıdır. Testin <span class="highlight">kararlılığını</span> ölçer. Zaman çok kısa olursa öğrenci hatırlar, çok uzun olursa özellik değişir.</li>
+                <li><strong>KR-20 / KR-21:</strong> Test bir kez uygulanır. Maddelerin 1 ve 0 olarak puanlandığı testlerde <span class="highlight">İç Tutarlılığı (Homojenliği)</span> ölçer. Yüksekse test tek boyutludur.</li>
+            </ul>
+
+            <h3>Geçerlik (Amaca Hizmet Etme)</h3>
+            <ul>
+                <li><strong>Kapsam Geçerliği:</strong> Testteki soruların, öğretilen konuları (müfredatı) tam olarak yansıtıp yansıtmadığıdır. Sağlamak için <strong>Belirtke Tablosu</strong> kullanılır.</li>
+                <li><strong>Yordama Geçerliği:</strong> Testten alınan puanlarla öğrencinin <span class="highlight">gelecekteki</span> başarısını (iş hayatı, okul hayatı vb.) doğru tahmin edebilme gücüdür.</li>
+                <li><strong>Yapı Geçerliği:</strong> Testin ölçtüğü soyut psikolojik kavrama (zekâ, ilgi) başka bir beceri karıştırmadan doğru kurguyu kurabilmesidir. En iyi kanıtı Faktör Analizi'dir.</li>
+            </ul>
+        </div>
+
+        <!-- BÖLÜM 3 -->
+        <div class="topic-card">
+            <h2>3. Test ve Madde İstatistikleri</h2>
+
+            <h3>Madde Güçlüğü (p) ve Ayırt Ediciliği (rjx)</h3>
+            <ul>
+                <li><strong>Madde Güçlük İndeksi (p):</strong> Sorunun zorluk seviyesidir. 0.00 ile 1.00 arası değişir. İdeal bir başarı testinin ortalama güçlüğü <strong>0.50</strong> (orta güçlükte) olmalıdır. 1'e yaklaştıkça soru kolaylaşır.</li>
+                <li><strong>Madde Ayırt Edicilik İndeksi (rjx):</strong> Bilenle bilmeyeni ayırma gücüdür. -1.00 ile +1.00 arası değişir. Eksi (negatif) çıkarsa soru hatalı çalışıyordur ve <strong>kesinlikle testten atılır</strong>. İdeal olan 0.30 ve üzeri (özellikle +0.40 üstü mükemmeldir).</li>
+            </ul>
+
+            <h3>Merkezi Eğilim Ölçüleri</h3>
+            <ul>
+                <li><strong>Mod (Tepe Değer):</strong> Frekansı en yüksek olan, en çok tekrar eden değerdir.</li>
+                <li><strong>Medyan (Ortanca):</strong> Puanlar sıralandığında tam %50'de, ortada kalan sayıdır. <span class="highlight">Aşırı uç değerlerin (çok yüksek/çok düşük) olduğu çarpık dağılımlarda</span> sınıfın durumunu en güvenilir gösteren ölçüdür.</li>
+            </ul>
+
+            <h3>Dağılım Şekilleri (Kayışlılık)</h3>
+            <ul>
+                <li><strong>Sola Çarpık:</strong> Sınav kolaydır, sınıf başarılıdır. Mod en yüksek değerdedir. (Mod > Medyan > Ortalama)</li>
+                <li><strong>Sağa Çarpık:</strong> Sınav zordur, sınıf başarısızdır. Puanlar düşükte (solda) yığılır, kuyruk sağa uzar. (Ortalama > Medyan > Mod)</li>
+            </ul>
+
+            <h3>Standart Puanlar (Z ve T)</h3>
+            <p>Farklı derslerdeki (veya farklı sınavlardaki) başarıyı aynı standartta kıyaslamak için kullanılır.</p>
+            <div class="formula-box">Z = (Öğrenci Puanı - Sınıf Ortalaması) / Standart Sapma</div>
+            <div class="formula-box">T = (Z Puanı * 10) + 50</div>
+            <p>Z puanı 0 çıkan (yani ortalamaya eşit puan alan) öğrencinin T puanı her zaman 50'dir. Z puanı eksi olanlar ortalamanın altındadır.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
