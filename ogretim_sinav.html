@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Soru Çöz - Öğretim Teknolojileri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="resources/ogretim_sorular.js"></script>
+    
+    <style>
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            margin: 0; padding: 15px 10px; background-color: #e5e7eb; color: #1f2937; 
+            display: flex; height: 100vh; height: 100dvh; justify-content: center; align-items: center; overflow: hidden; 
+        }
+
+        .quiz-card { background: #ffffff; width: 100%; max-width: 700px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; flex-direction: column; max-height: 100%; overflow: hidden; }
+        .quiz-header { background: #f8fafc; padding: 15px; border-bottom: 2px solid #e2e8f0; flex-shrink: 0; }
+        .stats-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .q-counter { font-size: 14px; font-weight: 700; color: #10b981; background: #d1fae5; padding: 6px 12px; border-radius: 8px; }
+        .score-badges { display: flex; gap: 6px; font-size: 13px; font-weight: 600; }
+        .badge-correct { color: #16a34a; background: #dcfce7; padding: 6px 8px; border-radius: 6px; }
+        .badge-wrong { color: #dc2626; background: #fee2e2; padding: 6px 8px; border-radius: 6px; }
+        
+        .progress-bg { width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #10b981; border-radius: 3px; width: 0%; transition: 0.3s; }
+
+        .quiz-body { padding: 20px 15px; overflow-y: auto; flex-grow: 1; }
+        .question-text { font-size: 16px; font-weight: 600; line-height: 1.5; margin-bottom: 20px; color: #111827; }
+        .options-container { display: flex; flex-direction: column; gap: 10px; }
+        
+        .option-btn { background: #ffffff; border: 2px solid #e2e8f0; padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 500; text-align: left; color: #334155; cursor: pointer; transition: all 0.2s; line-height: 1.4; }
+        .option-btn:hover:not(:disabled) { border-color: #cbd5e1; background: #f8fafc; }
+        .option-btn.correct { background: #dcfce7 !important; border-color: #22c55e !important; color: #166534 !important; font-weight: 700; }
+        .option-btn.wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; font-weight: 700; }
+        .option-btn:disabled { cursor: default; opacity: 0.9; }
+
+        .quiz-footer { background: #f8fafc; padding: 15px; border-top: 2px solid #e2e8f0; display: flex; justify-content: space-between; gap: 8px; flex-shrink: 0; }
+        
+        .nav-btn { flex: 1; padding: 12px 8px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 4px; text-decoration: none; }
+        .btn-prev { background: #e2e8f0; color: #475569; }
+        .btn-prev:hover:not(:disabled) { background: #cbd5e1; }
+        .btn-check { background: #f59e0b; color: white; flex: 1.2; }
+        .btn-check:hover:not(:disabled) { background: #d97706; }
+        .btn-next { background: #10b981; color: white; flex: 1.2; }
+        .btn-next:hover:not(:disabled) { background: #059669; }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        #result-screen { display: none; text-align: center; padding: 50px 20px; flex-grow: 1; justify-content: center; flex-direction: column; }
+        .result-circle { width: 100px; height: 100px; background: #d1fae5; border: 4px solid #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; color: #047857; margin: 0 auto 20px auto; }
+        .result-buttons { display: flex; gap: 10px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-card" id="quiz-card">
+        
+        <div class="quiz-header" id="header-area">
+            <div class="stats-row">
+                <div class="q-counter" id="question-counter">Soru: 1 / ?</div>
+                <div class="score-badges">
+                    <div class="badge-correct" id="correct-text">Doğru: 0</div>
+                    <div class="badge-wrong" id="wrong-text">Yanlış: 0</div>
+                </div>
+            </div>
+            <div class="progress-bg"><div class="progress-fill" id="progress-bar"></div></div>
+        </div>
+
+        <div class="quiz-body" id="quiz-area">
+            <div class="question-text" id="question-text">Soru yükleniyor...</div>
+            <div class="options-container" id="options-container"></div>
+        </div>
+
+        <div class="quiz-footer" id="footer-area">
+            <button class="nav-btn btn-prev" id="btn-prev" onclick="prevQuestion()">◂ Geri</button>
+            <button class="nav-btn btn-check" id="btn-check" onclick="showAnswer()">👁️ Pas Geç / Cevabı Gör</button>
+            <button class="nav-btn btn-next" id="btn-next" onclick="nextQuestion()">İleri ➔</button>
+        </div>
+
+        <div id="result-screen">
+            <h2 style="margin-top:0; color:#111827;">Sınav Tamamlandı!</h2>
+            <div class="result-circle" id="score-result">0/0</div>
+            <p style="color:#4b5563; font-size:16px;">Öğretim Teknolojileri denemesini başarıyla bitirdiniz!</p>
+            <div class="result-buttons">
+                <button class="nav-btn btn-prev" style="padding: 16px;" onclick="location.reload()">⟲ Tekrar Çöz</button>
+                <a href="ogretim_menu.html" class="nav-btn btn-next" style="padding: 16px;">⌂ Menüye Dön</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Değişken adını ogretimQuizData olarak kullanıyoruz, js dosyasındakiyle aynı olmalı.
+        if (typeof ogretimQuizData === 'undefined') {
+            document.getElementById('question-text').innerText = "HATA: Sorular yüklenemedi. 'resources/ogretim_sorular.js' dosyasını kontrol et.";
+        } else {
+            ogretimQuizData.forEach(q => { q.userAnswer = null; });
+
+            let currentIndex = 0;
+            let correctCount = 0;
+            let wrongCount = 0;
+            const totalQuestions = ogretimQuizData.length;
+
+            const qText = document.getElementById("question-text");
+            const optContainer = document.getElementById("options-container");
+            const btnPrev = document.getElementById("btn-prev");
+            const btnCheck = document.getElementById("btn-check");
+            const btnNext = document.getElementById("btn-next");
+
+            function loadQuestion() {
+                const q = ogretimQuizData[currentIndex];
+                
+                document.getElementById("question-counter").innerText = `Soru: ${currentIndex + 1} / ${totalQuestions}`;
+                document.getElementById("progress-bar").style.width = `${((currentIndex + 1) / totalQuestions) * 100}%`;
+                document.getElementById("correct-text").innerText = `Doğru: ${correctCount}`;
+                document.getElementById("wrong-text").innerText = `Yanlış: ${wrongCount}`;
+
+                qText.innerText = q.question;
+                optContainer.innerHTML = "";
+
+                q.options.forEach((opt, index) => {
+                    const btn = document.createElement("button");
+                    btn.className = "option-btn";
+                    btn.innerText = opt;
+                    
+                    if (q.userAnswer !== null) {
+                        btn.disabled = true;
+                        if (index === q.correct) {
+                            btn.classList.add("correct"); 
+                        } else if (index === q.userAnswer && q.userAnswer !== -1) {
+                            btn.classList.add("wrong"); 
+                        }
+                    } else {
+                        btn.onclick = () => selectOption(index);
+                    }
+                    optContainer.appendChild(btn);
+                });
+
+                btnPrev.disabled = currentIndex === 0; 
+                
+                if (q.userAnswer !== null) {
+                    btnCheck.disabled = true;
+                    btnNext.disabled = false;
+                    btnNext.innerText = (currentIndex === totalQuestions - 1) ? "Bitir ✓" : "İleri ➔";
+                } else {
+                    btnCheck.disabled = false;
+                    btnNext.disabled = true; 
+                    btnNext.innerText = "İleri ➔";
+                }
+                
+                document.getElementById("quiz-area").scrollTop = 0;
+            }
+
+            function selectOption(index) {
+                const q = ogretimQuizData[currentIndex];
+                if (q.userAnswer !== null) return; 
+                
+                q.userAnswer = index; 
+                
+                if (index === q.correct) {
+                    correctCount++;
+                } else {
+                    wrongCount++;
+                }
+                loadQuestion(); 
+            }
+
+            function showAnswer() {
+                const q = ogretimQuizData[currentIndex];
+                if (q.userAnswer !== null) return;
+                
+                q.userAnswer = -1; 
+                wrongCount++; 
+                loadQuestion();
+            }
+
+            function nextQuestion() {
+                if (currentIndex < totalQuestions - 1) {
+                    currentIndex++;
+                    loadQuestion();
+                } else {
+                    finishQuiz();
+                }
+            }
+
+            function prevQuestion() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    loadQuestion();
+                }
+            }
+
+            function finishQuiz() {
+                document.getElementById("header-area").style.display = "none";
+                document.getElementById("quiz-area").style.display = "none";
+                document.getElementById("footer-area").style.display = "none";
+                
+                document.getElementById("result-screen").style.display = "flex";
+                document.getElementById("score-result").innerText = `${correctCount}/${totalQuestions}`;
+            }
+
+            loadQuestion();
+        }
+    </script>
+</body>
+</html>
