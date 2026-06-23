@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ölçme ve Değerlendirme Modülü</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            margin: 0; 
+            padding: 20px; 
+            background-color: #f8fafc;
+            color: #1f2937; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .top-nav {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            margin-top: 10px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: #475569;
+            font-weight: 600;
+            font-size: 14px;
+            background: #e2e8f0;
+            padding: 10px 14px;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+        .back-btn:hover { background: #cbd5e1; }
+
+        .header { text-align: center; margin-bottom: 30px; width: 100%; max-width: 500px;}
+        .header h1 { margin: 0; font-size: 22px; color: #0f172a; }
+        .header p { margin: 8px 0 0 0; color: #475569; font-size: 14px; }
+
+        .action-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 24px;
+            margin-bottom: 15px;
+            border: 2px solid #e2e8f0;
+            transition: 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: inherit;
+        }
+        
+        .action-card:hover { border-color: #3b82f6; transform: translateY(-3px); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1); }
+
+        .action-icon {
+            font-size: 32px;
+            background: #eff6ff;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+        }
+
+        .action-content h2 { margin: 0 0 4px 0; font-size: 18px; color: #1e293b; }
+        .action-content p { margin: 0; font-size: 13px; color: #64748b; line-height: 1.4; }
+
+    </style>
+</head>
+<body>
+
+    <div class="top-nav">
+        <a href="index.html" class="back-btn">◂ Ana Menüye Dön</a>
+    </div>
+
+    <div class="header">
+        <h1>📊 Ölçme ve Değerlendirme</h1>
+        <p>Ne yapmak istersin? İster hızlıca konu tekrarı yap, ister hemen sorulara geç.</p>
+    </div>
+
+    <a href="konu_anlatimi.html" class="action-card">
+        <div class="action-icon">📖</div>
+        <div class="action-content">
+            <h2>Konu Çalış</h2>
+            <p>20 kilit konu, istatistiksel formüller, hata türleri ve özet notlar.</p>
+        </div>
+    </a>
+
+    <a href="sinav.html" class="action-card"> <div class="action-icon">📝</div>
+        <div class="action-content">
+            <h2>Soru Çöz</h2>
+            <p>100 soruluk kapsamlı soru havuzu ve detaylı analizlerle kendini test et.</p>
+        </div>
+    </a>
+
+</body>
+</html>
