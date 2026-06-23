@@ -19,30 +19,13 @@
             min-height: 100vh;
         }
 
-        .top-nav {
-            width: 100%;
-            max-width: 500px;
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-            margin-top: 10px;
-        }
-
-        .back-btn {
-            text-decoration: none;
-            color: #475569;
-            font-weight: 600;
-            font-size: 14px;
-            background: #e2e8f0;
-            padding: 10px 14px;
-            border-radius: 10px;
-            transition: 0.2s;
-        }
+        .top-nav { width: 100%; max-width: 500px; display: flex; align-items: center; margin-bottom: 30px; margin-top: 10px; }
+        .back-btn { text-decoration: none; color: #475569; font-weight: 600; font-size: 14px; background: #e2e8f0; padding: 10px 14px; border-radius: 10px; transition: 0.2s; }
         .back-btn:hover { background: #cbd5e1; }
 
         .header { text-align: center; margin-bottom: 30px; width: 100%; max-width: 500px;}
         .header h1 { margin: 0; font-size: 22px; color: #0f172a; }
-        .header p { margin: 8px 0 0 0; color: #475569; font-size: 14px; }
+        .header p { margin: 8px 0 0 0; color: #64748b; font-size: 14px; }
 
         .action-card {
             background: #ffffff;
@@ -87,7 +70,7 @@
 
     <div class="header">
         <h1>📊 Ölçme ve Değerlendirme</h1>
-        <p>Ne yapmak istersin? İster hızlıca konu tekrarı yap, ister hemen sorulara geç.</p>
+        <p>AGS'nin en teknik ve eleyici modülü. İhtiyacına uygun alanı seç ve çalışmaya başla.</p>
     </div>
 
     <a href="konu_anlatimi.html" class="action-card">
@@ -98,10 +81,27 @@
         </div>
     </a>
 
-    <a href="sinav.html" class="action-card"> <div class="action-icon">📝</div>
+    <a href="sinav.html" class="action-card">
+        <div class="action-icon">📝</div>
         <div class="action-content">
             <h2>Soru Çöz</h2>
             <p>100 soruluk kapsamlı soru havuzu ve detaylı analizlerle kendini test et.</p>
+        </div>
+    </a>
+
+    <a href="islem_rehberi.html" class="action-card">
+        <div class="action-icon">🧮</div>
+        <div class="action-content">
+            <h2>Sıfır Hata İşlem Rehberi</h2>
+            <p>Z, T puanı ve Varyans hesaplamaları için pratik taktikler.</p>
+        </div>
+    </a>
+
+    <a href="islem_sinav.html" class="action-card">
+        <div class="action-icon">⚡</div>
+        <div class="action-content">
+            <h2>İşlem Soruları (Pratik)</h2>
+            <p>Sadece matematiksel işlemlere odaklanan özel 15 soru.</p>
         </div>
     </a>
 
