@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Konu Anlatımı - Öğretim Teknolojileri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; background-color: #f8fafc; color: #334155; display: flex; flex-direction: column; height: 100vh; }
+        .top-nav { background: white; padding: 15px 20px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 15px; position: sticky; top: 0; z-index: 10; }
+        .back-btn { text-decoration: none; color: #475569; font-weight: 600; font-size: 14px; background: #f1f5f9; padding: 8px 12px; border-radius: 8px; transition: 0.2s; }
+        .back-btn:hover { background: #e2e8f0; }
+        .page-title { margin: 0; font-size: 16px; font-weight: 700; color: #0f172a; }
+        .content { padding: 20px; overflow-y: auto; flex-grow: 1; max-width: 800px; margin: 0 auto; width: 100%; }
+        .topic-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: 1px solid #e2e8f0; }
+        .topic-card h2 { margin: 0 0 15px 0; font-size: 18px; color: #1e40af; border-bottom: 2px solid #eff6ff; padding-bottom: 10px; }
+        .topic-card h3 { margin: 15px 0 5px 0; font-size: 15px; color: #0f172a; }
+        .topic-card p { margin: 0 0 10px 0; font-size: 14px; line-height: 1.6; color: #475569; }
+        .topic-card ul { margin: 0 0 15px 0; padding-left: 20px; font-size: 14px; color: #475569; line-height: 1.6; }
+        .topic-card li { margin-bottom: 6px; }
+        .highlight { background: #fef08a; padding: 0 4px; border-radius: 4px; color: #854d0e; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <div class="top-nav">
+        <a href="index.html" class="back-btn">◂ Ana Menüye Dön</a>
+        <h1 class="page-title">💻 Öğretim Teknolojileri</h1>
+    </div>
+
+    <div class="content">
+
+        <div class="topic-card">
+            <h2>1. Öğrenme ve Öğretme Kuramları</h2>
+            <ul>
+                <li><strong>Davranışçı Bakış:</strong> Öğrenme, bir davranışın gösterilme olasılığındaki değişimdir. Öğrenci edilgendir (pasiftir), öğretmen dış etkenleri düzenler.</li>
+                <li><strong>Bilişsel Bakış:</strong> Öğrenme, bellekte depolanan bilgide meydana gelen değişimdir (Dikkat, kodlama, geri çağırma). Öğrenci bilgiyi işleyen kişidir.</li>
+                <li><strong>Yapılandırmacı Bakış:</strong> Öğrenme, yaşantılar sonucu anlamda meydana gelen değişimdir. Öğrenci bilgiyi kendisi yapılandırır, öğrenmeden sorumludur. Öğretmen rehberdir.</li>
+            </ul>
+        </div>
+
+        <div class="topic-card">
+            <h2>2. İletişim Süreci</h2>
+            <p>İletişim anlamları ortak kılma sürecidir. Öğeleri şunlardır:</p>
+            <ul>
+                <li><strong>Kaynak ve Kodlama:</strong> İletişimi başlatan kişidir (Öğretmen). Bilgiler sembollerle kodlanır.</li>
+                <li><strong>Mesaj:</strong> Kodlanan bilginin aldığı fiziki şekildir.</li>
+                <li><strong>Kanal (Araç-Gereç):</strong> Mesajın alıcıya iletilmesini sağlayan yöntem ve materyallerdir.</li>
+                <li><strong>Alıcı ve Kod Çözme:</strong> Mesajı alan, anlamlandıran ve tepkide bulunan kişidir (Öğrenci). Anlamlandırma, alıcının "yaşantı alanına" göre değişir.</li>
+                <li><strong>Geri Bildirim:</strong> Mesajın doğru anlaşılıp anlaşılmadığını gösteren tepkidir.</li>
+            </ul>
+        </div>
+
+        <div class="topic-card">
+            <h2>3. Edgar Dale'in Yaşantı Konisi</h2>
+            <p>Öğrenme işlemine ne kadar çok duyu organı katılırsa, öğrenme o kadar iyi olur ve geç unutulur. En iyi öğrenme kendi kendimize yaparak öğrendiğimizdir.</p>
+            <ul>
+                <li><strong>Koninin Tabanı:</strong> Bütün duyu organlarıyla, <span class="highlight">kendi kendine edinilen</span>, somut ve basit yaşantılardır (Doğrudan doğruya edinilen maksatlı yaşantılar, model ve numuneler).</li>
+                <li><strong>Koninin Tepesi:</strong> Az sayıda duyuyla, <span class="highlight">başkalarının yardımıyla</span> edinilen, soyut ve karmaşık yaşantılardır (Sözel semboller, görsel semboller).</li>
+            </ul>
+        </div>
+
+        <div class="topic-card">
+            <h2>4. Öğretim Tasarımı Modelleri</h2>
+            <h3>ADDIE Modeli (Sistematik Tasarım)</h3>
+            <ul>
+                <li><strong>Analiz (Analyze):</strong> Problem nedir? Hedef kitle kimdir? İhtiyaç analizi yapılır.</li>
+                <li><strong>Tasarım (Design):</strong> Hedefler nelerdir? Hangi strateji ve yöntemler kullanılacak?</li>
+                <li><strong>Geliştirme (Development):</strong> Taslak materyallerin üretilmesi ve görünümünün ayarlanmasıdır.</li>
+                <li><strong>Uygulama (Implementation):</strong> Hazırlanan programın pilot çalışmasının yapıldığı ve öğrencilere sunulduğu aşamadır.</li>
+                <li><strong>Değerlendirme (Evaluation):</strong> Öğrenciler öğrendi mi? Materyal amaca ulaştı mı? Sürekli geribildirimle sistem güncellenir.</li>
+            </ul>
+            
+            <h3>ASSURE Modeli (Sınıf İçi Planlama)</h3>
+            <p>Günlük ders veren öğretmenlerin materyal seçimi ve kullanımı için bir kılavuzdur.</p>
+            <ul>
+                <li><strong>A - Öğrenci Analizi:</strong> Yaş, giriş yetenekleri, öğrenme stilleri saptanır.</li>
+                <li><strong>S - Hedeflerin Belirlenmesi:</strong> Ulaşılacak hedefler belirlenir (Bilişsel, duyuşsal).</li>
+                <li><strong>S - Yöntem ve Materyal Seçimi:</strong> En uygun ortam ve araçlar seçilir.</li>
+                <li><strong>U - Materyallerin Kullanımı:</strong> Ortam ve öğrenci hazırlanır, ders işlenir.</li>
+                <li><strong>R - Öğrenci Katılımı:</strong> Etkileşim ve pratik yapma imkanı sağlanır.</li>
+                <li><strong>E - Değerlendirme:</strong> Öğrenci ve materyal değerlendirilir.</li>
+            </ul>
+
+            <h3>ARCS Motivasyon Modeli</h3>
+            <ul>
+                <li><strong>Attention (Dikkat):</strong> Öğrenenin ilgisini çekmek.</li>
+                <li><strong>Relevance (Uygunluk):</strong> İçeriğin öğrencinin ihtiyacı ve yaşantısıyla ilişkilendirilmesi.</li>
+                <li><strong>Confidence (Güven):</strong> Öğrencinin başarabileceğine inanması.</li>
+                <li><strong>Satisfaction (Doyum):</strong> Başarı sonrası içsel ve dışsal ödüllerle tatmin sağlanması.</li>
+            </ul>
+        </div>
+
+        <div class="topic-card">
+            <h2>5. Görsel Tasarımın Unsurları ve İlkeleri</h2>
+            <ul>
+                <li><strong>Gerçekçi (Realistic) Görseller:</strong> Nesneyi kendi renkleriyle, gerçeğe en yakın şekilde gösterir (Örn: Bir arabanın gerçek fotoğrafı).</li>
+                <li><strong>Benzeşik (Analogic) Görseller:</strong> Bir kavramı, ona benzeyen başka bir kavramla (analoji) açıklayarak eski bilgilerin yeni bilgileri yorumlamasında kullanılır.</li>
+                <li><strong>Şematik (Organizational) Görseller:</strong> Kavramlar arası ilişkileri gösterir (Akış şemaları, grafikler, haritalar).</li>
+            </ul>
+            <h3>Yerleşim İlkeleri</h3>
+            <p><strong>Yakınlık:</strong> İlgili ögeler yakın, ilgisizler uzak konur. <br><strong>Denge ve Vurgu:</strong> Oransızlıktan kaçınılır. En önemli/dikkat çekici öge materyalin <strong>sol üst</strong> köşesine ya da merkeze yerleştirilmelidir. Yönlendiriciler (ok, renk, kalınlaştırma) kullanılmalıdır.</p>
+        </div>
+
+        <div class="topic-card">
+            <h2>6. Bloom Taksonomisi</h2>
+            <ul>
+                <li><strong>Bilişsel Alan:</strong> Bilgi, Kavrama, Uygulama, Analiz, Sentez, Değerlendirme. (Yenilenmiş halinde en üst basamak "Yaratma"dır).</li>
+                <li><strong>Duyuşsal Alan:</strong> Alma, Tepkide Bulunma, Değer Verme, Örgütleme, Kişilik Haline Getirme.</li>
+                <li><strong>Psikomotor Alan:</strong> Algılama, Kurulma, Kılavuzla Yapma, Mekanikleşme, Beceri Haline Getirme, Yaratma.</li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>
